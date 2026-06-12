@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>We received your message</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Arial, sans-serif; background: #F5EDE0; color: #2C1810; }
+    .wrapper { max-width: 620px; margin: 30px auto; padding: 0 16px 40px; }
+    .card { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 24px rgba(44,24,16,0.12); }
+    .header { background: linear-gradient(135deg, #2C1810 0%, #4A2C1A 100%); padding: 36px 30px 28px; text-align: center; }
+    .header .om { font-size: 44px; line-height: 1; margin-bottom: 10px; }
+    .header h1 { color: #FFD700; font-size: 22px; letter-spacing: 2px; margin-bottom: 4px; }
+    .header .subtitle { color: #FFD9C0; font-size: 13px; letter-spacing: 1px; }
+    .body { padding: 32px 30px; }
+    .greeting { font-size: 16px; color: #2C1810; margin-bottom: 12px; }
+    .intro { font-size: 14px; color: #6B4226; line-height: 1.7; margin-bottom: 24px; }
+    .section-title { font-size: 12px; font-weight: 700; color: #FF6B35; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; border-bottom: 1.5px solid #FFD9C0; padding-bottom: 6px; }
+    .detail-full { background: #FFF8F0; border: 1px solid #FFE5CC; border-radius: 8px; padding: 12px 14px; margin-bottom: 8px; }
+    .detail-label { font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+    .detail-value { font-size: 14px; font-weight: 600; color: #2C1810; }
+    .message-box { background: #FFF8F0; border: 1px solid #FFE5CC; border-radius: 8px; padding: 16px; margin-bottom: 24px; font-size: 14px; color: #6B4226; line-height: 1.7; }
+    .note-box { background: #FFF8F0; border-left: 4px solid #FF6B35; border-radius: 0 8px 8px 0; padding: 14px 18px; margin-bottom: 24px; font-size: 13px; color: #6B4226; line-height: 1.6; }
+    .contact-bar { background: #FFF3E0; border-radius: 8px; padding: 14px 18px; margin-bottom: 24px; font-size: 13px; color: #2C1810; }
+    .contact-bar strong { color: #FF6B35; }
+    .footer { background: #2C1810; padding: 24px 30px; text-align: center; }
+    .footer .brand { color: #FFD700; font-size: 15px; font-weight: 700; letter-spacing: 2px; margin-bottom: 6px; }
+    .footer .tagline { color: #FFD9C0; font-size: 12px; margin-bottom: 10px; }
+    .footer a { color: #FF6B35; text-decoration: none; }
+  </style>
+</head>
+<body>
+<div class="wrapper">
+  <div class="card">
+
+    <div class="header">
+      <div class="om">🕉️</div>
+      <h1>Namaste!</h1>
+      <div class="subtitle">MESSAGE RECEIVED — PREKSHA HOSPITALITY</div>
+    </div>
+
+    <div class="body">
+      <p class="greeting">Dear <strong>{{ inquiry.name }}</strong>,</p>
+      <p class="intro">
+        Thank you for reaching out to us. We have received your message and our team will respond within <strong>24 hours</strong>. We look forward to connecting with you.
+      </p>
+
+      <div class="section-title">📋 Your Message Summary</div>
+
+      <div class="detail-full">
+        <div class="detail-label">Subject</div>
+        <div class="detail-value">{{ inquiry.subject }}</div>
+      </div>
+
+      <div class="detail-full" style="margin-bottom: 16px;">
+        <div class="detail-label">Your Contact Details</div>
+        <div class="detail-value">{{ inquiry.email }}{% if inquiry.phone %} &nbsp;|&nbsp; {{ inquiry.phone }}{% endif %}</div>
+      </div>
+
+      <div class="section-title">💬 Your Message</div>
+      <div class="message-box">{{ inquiry.message }}</div>
+
+      <div class="note-box">
+        Our team will reply to <strong>{{ inquiry.email }}</strong>{% if inquiry.phone %} or call you on <strong>{{ inquiry.phone }}</strong>{% endif %}. If you have an urgent query, please contact us directly.
+      </div>
+
+      <div class="contact-bar">
+        📞 Call us: <strong>+91-XXXXXXXXXX</strong> &nbsp;|&nbsp; ✉️ <a href="mailto:contact@prekshahospitality.com">contact@prekshahospitality.com</a>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="brand">🕉️ &nbsp; PREKSHA HOSPITALITY</div>
+      <div class="tagline">Where Every Stay is Divine</div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

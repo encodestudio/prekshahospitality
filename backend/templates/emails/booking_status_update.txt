@@ -1,0 +1,13 @@
+{{ status_emoji }} Booking {{ status_text }}
+
+Dear {{ booking.guest_name }},
+
+Your booking at {{ property.name }} has been {{ status_text }}.
+
+Reference: {{ booking.booking_reference }}
+Check-in: {{ booking.check_in_date|date:"d M Y" }}
+Check-out: {{ booking.check_out_date|date:"d M Y" }}
+{% if booking.admin_notes %}Note: {{ booking.admin_notes }}{% endif %}
+{% if property.phone %}For queries: {{ property.phone }}{% endif %}
+
+🕉️ Preksha Hospitality — Where Every Stay is Divine

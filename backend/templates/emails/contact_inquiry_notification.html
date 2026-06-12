@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Contact Inquiry</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Arial, sans-serif; background: #F5EDE0; color: #2C1810; }
+    .wrapper { max-width: 620px; margin: 30px auto; padding: 0 16px 40px; }
+    .card { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 24px rgba(44,24,16,0.12); }
+    .header { background: linear-gradient(135deg, #2C1810 0%, #4A2C1A 100%); padding: 36px 30px 28px; text-align: center; }
+    .header .om { font-size: 44px; line-height: 1; margin-bottom: 10px; }
+    .header h1 { color: #FFD700; font-size: 22px; letter-spacing: 2px; margin-bottom: 4px; }
+    .header .subtitle { color: #FFD9C0; font-size: 13px; letter-spacing: 1px; }
+    .body { padding: 32px 30px; }
+    .alert-badge { display: inline-block; background: #FF6B35; color: #fff; font-size: 12px; font-weight: 700; letter-spacing: 1px; padding: 6px 16px; border-radius: 20px; margin-bottom: 20px; }
+    .section-title { font-size: 12px; font-weight: 700; color: #FF6B35; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; border-bottom: 1.5px solid #FFD9C0; padding-bottom: 6px; }
+    .details-grid { display: table; width: 100%; border-collapse: separate; border-spacing: 8px; margin-bottom: 24px; }
+    .detail-row { display: table-row; }
+    .detail-item { display: table-cell; background: #FFF8F0; border: 1px solid #FFE5CC; border-radius: 8px; padding: 12px 14px; width: 50%; vertical-align: top; }
+    .detail-emoji { font-size: 18px; margin-bottom: 4px; }
+    .detail-label { font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+    .detail-value { font-size: 14px; font-weight: 700; color: #2C1810; }
+    .detail-full { background: #FFF8F0; border: 1px solid #FFE5CC; border-radius: 8px; padding: 12px 14px; margin-bottom: 8px; }
+    .message-box { background: #FFF8F0; border: 1px solid #FFE5CC; border-radius: 8px; padding: 16px; margin-bottom: 24px; font-size: 14px; color: #6B4226; line-height: 1.7; }
+    .action-box { background: linear-gradient(135deg, #FFF3E0, #FFECD2); border: 1.5px solid #FFD9C0; border-radius: 10px; padding: 16px 20px; margin-bottom: 24px; font-size: 14px; color: #2C1810; }
+    .action-box strong { color: #FF6B35; }
+    .footer { background: #2C1810; padding: 24px 30px; text-align: center; }
+    .footer .brand { color: #FFD700; font-size: 15px; font-weight: 700; letter-spacing: 2px; margin-bottom: 6px; }
+    .footer .tagline { color: #FFD9C0; font-size: 12px; }
+  </style>
+</head>
+<body>
+<div class="wrapper">
+  <div class="card">
+
+    <div class="header">
+      <div class="om">📩</div>
+      <h1>New Contact Inquiry</h1>
+      <div class="subtitle">PREKSHA HOSPITALITY — ADMIN NOTIFICATION</div>
+    </div>
+
+    <div class="body">
+      <div><span class="alert-badge">🔔 ACTION REQUIRED</span></div>
+
+      <div class="section-title">👤 Sender Details</div>
+      <table class="details-grid" cellspacing="8">
+        <tr class="detail-row">
+          <td class="detail-item">
+            <div class="detail-emoji">👤</div>
+            <div class="detail-label">Name</div>
+            <div class="detail-value">{{ inquiry.name }}</div>
+          </td>
+          <td class="detail-item">
+            <div class="detail-emoji">✉️</div>
+            <div class="detail-label">Email</div>
+            <div class="detail-value"><a href="mailto:{{ inquiry.email }}" style="color:#FF6B35;">{{ inquiry.email }}</a></div>
+          </td>
+        </tr>
+        {% if inquiry.phone %}
+        <tr class="detail-row">
+          <td class="detail-item" colspan="2">
+            <div class="detail-emoji">📞</div>
+            <div class="detail-label">Phone</div>
+            <div class="detail-value"><a href="tel:{{ inquiry.phone }}" style="color:#FF6B35;">{{ inquiry.phone }}</a></div>
+          </td>
+        </tr>
+        {% endif %}
+      </table>
+
+      <div class="section-title">📋 Subject</div>
+      <div class="detail-full" style="margin-bottom: 16px;">
+        <div class="detail-value">{{ inquiry.subject }}</div>
+      </div>
+
+      <div class="section-title">💬 Message</div>
+      <div class="message-box">{{ inquiry.message }}</div>
+
+      <div class="action-box">
+        <strong>Reply to:</strong> <a href="mailto:{{ inquiry.email }}" style="color:#FF6B35;">{{ inquiry.email }}</a>{% if inquiry.phone %}<br><strong>Or call:</strong> <a href="tel:{{ inquiry.phone }}" style="color:#FF6B35;">{{ inquiry.phone }}</a>{% endif %}
+        <br><br>Please respond within <strong>24 hours</strong>.
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="brand">🕉️ &nbsp; PREKSHA HOSPITALITY</div>
+      <div class="tagline">Where Every Stay is Divine</div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

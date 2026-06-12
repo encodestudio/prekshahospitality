@@ -1,0 +1,31 @@
+🔔 NEW BOOKING REQUEST — ACTION REQUIRED
+==========================================
+
+Booking Reference : {{ booking.booking_reference }}
+Received          : {{ booking.created_at|date:"d M Y, h:i A" }}
+
+CUSTOMER DETAILS
+----------------
+Name   : {{ booking.guest_name }}
+Mobile : {{ booking.mobile_number }}
+Email  : {{ booking.email }}
+
+BOOKING DETAILS
+---------------
+Property      : {{ property.name }}
+{% if booking.room_category %}Room Category : {{ booking.room_category.name }}
+{% endif %}Check-in      : {{ booking.check_in_date|date:"l, d M Y" }}
+Check-out     : {{ booking.check_out_date|date:"l, d M Y" }}
+Duration      : {{ nights }} Night{{ nights|pluralize }}
+Rooms         : {{ booking.number_of_rooms }}
+Total Guests  : {{ booking.total_guests }} ({{ booking.number_of_adults }} Adult{{ booking.number_of_adults|pluralize }}{% if booking.number_of_children %}, {{ booking.number_of_children }} Child{{ booking.number_of_children|pluralize:"ren" }}{% endif %})
+{% if booking.children_ages %}Children Ages : {{ booking.children_ages|join:", " }} yrs
+{% endif %}
+{% if booking.special_requests %}SPECIAL REQUESTS FROM GUEST
+----------------------------
+{{ booking.special_requests }}
+
+{% endif %}Manage Bookings : {{ manage_url }}
+
+--
+Preksha Hospitality — Internal notification. Do not share with guests.

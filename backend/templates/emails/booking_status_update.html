@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body { font-family: Arial, sans-serif; background: #FFF8F0; margin: 0; padding: 0; }
+    .container { max-width: 600px; margin: 0 auto; background: #fff; border-radius: 8px; overflow: hidden; }
+    .header { background: linear-gradient(135deg, #FF6B35, #FF8C42); padding: 30px; text-align: center; }
+    .header h1 { color: #fff; margin: 0; font-size: 24px; }
+    .status-confirmed { background: #4CAF50; }
+    .status-cancelled { background: #F44336; }
+    .body { padding: 30px; }
+    .booking-ref { background: #FFF3E0; border-left: 4px solid #FF6B35; padding: 15px; border-radius: 4px; margin: 20px 0; }
+    .footer { background: #2C1810; color: #FFD700; padding: 20px; text-align: center; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header {% if booking.status == 'confirmed' %}status-confirmed{% elif booking.status == 'cancelled' %}status-cancelled{% endif %}">
+      <div style="font-size:36px;">{{ status_emoji }}</div>
+      <h1>Booking {{ status_text }}</h1>
+    </div>
+    <div class="body">
+      <p>Dear <strong>{{ booking.guest_name }}</strong>,</p>
+      <p>Your booking at <strong>{{ property.name }}</strong> has been <strong>{{ status_text }}</strong>.</p>
+      <div class="booking-ref">
+        <strong>Reference:</strong> {{ booking.booking_reference }}<br>
+        <strong>Check-in:</strong> {{ booking.check_in_date|date:"d M Y" }}<br>
+        <strong>Check-out:</strong> {{ booking.check_out_date|date:"d M Y" }}
+      </div>
+      {% if booking.admin_notes %}<p><strong>Note from our team:</strong> {{ booking.admin_notes }}</p>{% endif %}
+      {% if property.phone %}<p>For queries: <strong>{{ property.phone }}</strong></p>{% endif %}
+    </div>
+    <div class="footer">🕉️ <strong>Preksha Hospitality</strong> — Where Every Stay is Divine</div>
+  </div>
+</body>
+</html>

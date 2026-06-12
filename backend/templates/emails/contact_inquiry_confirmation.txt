@@ -1,0 +1,20 @@
+Namaste, {{ inquiry.name }}!
+
+Thank you for reaching out to Preksha Hospitality. We have received your message and our team will respond within 24 hours.
+
+YOUR MESSAGE SUMMARY
+====================
+Subject : {{ inquiry.subject }}
+Email   : {{ inquiry.email }}{% if inquiry.phone %}
+Phone   : {{ inquiry.phone }}{% endif %}
+
+Your Message:
+{{ inquiry.message }}
+
+Our team will reply to {{ inquiry.email }}{% if inquiry.phone %} or call you on {{ inquiry.phone }}{% endif %}.
+
+For urgent queries, please contact us directly:
+Email: contact@prekshahospitality.com
+
+---
+Preksha Hospitality — Where Every Stay is Divine

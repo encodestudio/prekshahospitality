@@ -1,0 +1,18 @@
+Jai Shri Ram! Namaste {{ booking.guest_name }},
+
+Thank you for choosing {{ property.name }}. We have received your booking request.
+
+BOOKING REFERENCE: {{ booking.booking_reference }}
+STATUS: PENDING CONFIRMATION
+
+Property: {{ property.name }}
+Location: {{ property.location }}, {{ property.city }}
+Check-in: {{ booking.check_in_date|date:"d M Y" }}
+Check-out: {{ booking.check_out_date|date:"d M Y" }}
+Rooms: {{ booking.number_of_rooms }}{% if booking.room_category %} ({{ booking.room_category.name }}){% endif %}
+Guests: {{ booking.total_guests }} Total ({{ booking.number_of_adults }} Adults{% if booking.number_of_children %}, {{ booking.number_of_children }} Children{% endif %})
+
+Our team will confirm your booking within 2-4 hours.
+{% if property.phone %}For queries: {{ property.phone }}{% endif %}
+
+🕉️ Preksha Hospitality — Where Every Stay is Divine

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Booking Request Received</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Arial, sans-serif; background: #F5EDE0; color: #2C1810; }
+    .wrapper { max-width: 620px; margin: 30px auto; padding: 0 16px 40px; }
+    .card { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 24px rgba(44,24,16,0.12); }
+
+    /* Header */
+    .header { background: linear-gradient(135deg, #2C1810 0%, #4A2C1A 100%); padding: 36px 30px 28px; text-align: center; }
+    .header .om { font-size: 44px; line-height: 1; margin-bottom: 10px; }
+    .header h1 { color: #FFD700; font-size: 22px; letter-spacing: 2px; margin-bottom: 4px; }
+    .header .subtitle { color: #FFD9C0; font-size: 13px; letter-spacing: 1px; }
+
+    /* Body */
+    .body { padding: 32px 30px; }
+    .greeting { font-size: 16px; color: #2C1810; margin-bottom: 12px; }
+    .intro { font-size: 14px; color: #6B4226; line-height: 1.7; margin-bottom: 24px; }
+
+    /* Booking reference box */
+    .ref-box { background: linear-gradient(135deg, #FFF3E0, #FFECD2); border: 1.5px solid #FFD9C0; border-radius: 10px; padding: 20px 24px; margin-bottom: 24px; text-align: center; }
+    .ref-label { font-size: 11px; color: #FF6B35; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+    .ref-code { font-size: 28px; font-weight: 700; color: #2C1810; letter-spacing: 4px; font-family: 'Courier New', monospace; }
+    .ref-status { display: inline-block; background: #FF9800; color: #fff; font-size: 11px; font-weight: 700; letter-spacing: 1px; padding: 4px 14px; border-radius: 20px; margin-top: 10px; }
+
+    /* Details grid */
+    .section-title { font-size: 12px; font-weight: 700; color: #FF6B35; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; border-bottom: 1.5px solid #FFD9C0; padding-bottom: 6px; }
+    .details-grid { display: table; width: 100%; border-collapse: separate; border-spacing: 8px; margin-bottom: 24px; }
+    .detail-row { display: table-row; }
+    .detail-item { display: table-cell; background: #FFF8F0; border: 1px solid #FFE5CC; border-radius: 8px; padding: 12px 14px; width: 50%; vertical-align: top; }
+    .detail-emoji { font-size: 18px; margin-bottom: 4px; }
+    .detail-label { font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+    .detail-value { font-size: 14px; font-weight: 700; color: #2C1810; }
+
+    /* Single item row */
+    .detail-full { background: #FFF8F0; border: 1px solid #FFE5CC; border-radius: 8px; padding: 12px 14px; margin-bottom: 8px; }
+
+    /* Note box */
+    .note-box { background: #FFF8F0; border-left: 4px solid #FF6B35; border-radius: 0 8px 8px 0; padding: 14px 18px; margin-bottom: 24px; font-size: 13px; color: #6B4226; line-height: 1.6; }
+
+    /* Contact */
+    .contact-bar { background: #FFF3E0; border-radius: 8px; padding: 14px 18px; margin-bottom: 24px; font-size: 13px; color: #2C1810; }
+    .contact-bar strong { color: #FF6B35; }
+
+    /* Footer */
+    .footer { background: #2C1810; padding: 24px 30px; text-align: center; }
+    .footer .brand { color: #FFD700; font-size: 15px; font-weight: 700; letter-spacing: 2px; margin-bottom: 6px; }
+    .footer .tagline { color: #FFD9C0; font-size: 12px; margin-bottom: 10px; }
+    .footer .address { color: rgba(255,217,192,0.6); font-size: 11px; }
+    .footer a { color: #FF6B35; text-decoration: none; }
+  </style>
+</head>
+<body>
+<div class="wrapper">
+  <div class="card">
+
+    <!-- Header -->
+    <div class="header">
+      <div class="om">🕉️</div>
+      <h1>Jai Shri Ram!</h1>
+      <div class="subtitle">BOOKING REQUEST RECEIVED</div>
+    </div>
+
+    <!-- Body -->
+    <div class="body">
+      <p class="greeting">Dear <strong>{{ booking.guest_name }}</strong>,</p>
+      <p class="intro">
+        Namaste! Thank you for choosing <strong>{{ property.name }}</strong>. We have received your booking request and our team will confirm it within <strong>2–4 hours</strong>.
+      </p>
+
+      <!-- Booking Reference -->
+      <div class="ref-box">
+        <div class="ref-label">Your Booking Reference</div>
+        <div class="ref-code">{{ booking.booking_reference }}</div>
+        <div class="ref-status">⏳ PENDING CONFIRMATION</div>
+      </div>
+
+      <!-- Stay Details -->
+      <div class="section-title">📋 Stay Details</div>
+      <table class="details-grid" cellspacing="8">
+        <tr class="detail-row">
+          <td class="detail-item">
+            <div class="detail-emoji">🏨</div>
+            <div class="detail-label">Property</div>
+            <div class="detail-value">{{ property.name }}</div>
+          </td>
+          <td class="detail-item">
+            <div class="detail-emoji">📍</div>
+            <div class="detail-label">Location</div>
+            <div class="detail-value">{{ property.location }}, {{ property.city }}</div>
+          </td>
+        </tr>
+        <tr class="detail-row">
+          <td class="detail-item">
+            <div class="detail-emoji">📅</div>
+            <div class="detail-label">Check-in</div>
+            <div class="detail-value">{{ booking.check_in_date|date:"d M Y" }}</div>
+          </td>
+          <td class="detail-item">
+            <div class="detail-emoji">📅</div>
+            <div class="detail-label">Check-out</div>
+            <div class="detail-value">{{ booking.check_out_date|date:"d M Y" }}</div>
+          </td>
+        </tr>
+        <tr class="detail-row">
+          <td class="detail-item">
+            <div class="detail-emoji">🌙</div>
+            <div class="detail-label">Duration</div>
+            <div class="detail-value">{{ nights }} Night{{ nights|pluralize }}</div>
+          </td>
+          <td class="detail-item">
+            <div class="detail-emoji">🛏️</div>
+            <div class="detail-label">Rooms</div>
+            <div class="detail-value">
+              {{ booking.number_of_rooms }}{% if booking.room_category %} × {{ booking.room_category.name }}{% endif %}
+            </div>
+          </td>
+        </tr>
+        <tr class="detail-row">
+          <td class="detail-item">
+            <div class="detail-emoji">👥</div>
+            <div class="detail-label">Total Guests</div>
+            <div class="detail-value">{{ booking.total_guests }}</div>
+          </td>
+          <td class="detail-item">
+            <div class="detail-emoji">🧑‍🤝‍🧑</div>
+            <div class="detail-label">Composition</div>
+            <div class="detail-value">
+              {{ booking.number_of_adults }} Adult{{ booking.number_of_adults|pluralize }}{% if booking.number_of_children %}, {{ booking.number_of_children }} Child{{ booking.number_of_children|pluralize:"ren" }}{% endif %}
+            </div>
+          </td>
+        </tr>
+      </table>
+
+      {% if booking.special_requests %}
+      <!-- Special Requests -->
+      <div class="section-title">💬 Special Requests</div>
+      <div class="note-box">{{ booking.special_requests }}</div>
+      {% endif %}
+
+      <!-- What next -->
+      <div class="note-box">
+        <strong>What happens next?</strong><br>
+        Our team will review your request and reach out to you on <strong>{{ booking.mobile_number }}</strong> or this email to confirm. Please keep your phone accessible.
+      </div>
+
+      {% if property.phone %}
+      <div class="contact-bar">
+        📞 For urgent queries: <strong>{{ property.phone }}</strong>
+        {% if property.email %} &nbsp;|&nbsp; ✉️ <a href="mailto:{{ property.email }}">{{ property.email }}</a>{% endif %}
+      </div>
+      {% endif %}
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <div class="brand">🕉️ &nbsp; PREKSHA HOSPITALITY</div>
+      <div class="tagline">Where Every Stay is Divine</div>
+      {% if property.address %}<div class="address">{{ property.address }}</div>{% endif %}
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

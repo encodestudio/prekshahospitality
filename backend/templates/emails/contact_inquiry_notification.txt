@@ -1,0 +1,24 @@
+NEW CONTACT INQUIRY — PREKSHA HOSPITALITY
+==========================================
+
+ACTION REQUIRED: Please respond within 24 hours.
+
+SENDER DETAILS
+--------------
+Name   : {{ inquiry.name }}
+Email  : {{ inquiry.email }}{% if inquiry.phone %}
+Phone  : {{ inquiry.phone }}{% endif %}
+
+SUBJECT
+-------
+{{ inquiry.subject }}
+
+MESSAGE
+-------
+{{ inquiry.message }}
+
+---
+Reply to: {{ inquiry.email }}{% if inquiry.phone %}
+Or call : {{ inquiry.phone }}{% endif %}
+
+Preksha Hospitality Admin Panel
