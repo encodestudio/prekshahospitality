@@ -5,9 +5,18 @@
       "src": "api/index.py",
       "use": "@vercel/python",
       "config": { "maxLambdaSize": "30mb" }
+    },
+    {
+      "src": "build_files.sh",
+      "use": "@vercel/static-build",
+      "config": { "distDir": "staticfiles" }
     }
   ],
   "routes": [
+    {
+      "src": "/static/(.*)",
+      "dest": "/static/$1"
+    },
     {
       "src": "/(.*)",
       "dest": "api/index.py"
