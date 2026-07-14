@@ -270,21 +270,6 @@ export default function HeroSection({ property }) {
 
       <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 3, py: { xs: 8, md: 12 } }}>
         <Box sx={{ maxWidth: 720 }}>
-          {/* Spiritual tagline */}
-          <Typography
-            sx={{
-              fontFamily: '"Lato", sans-serif',
-              color: '#FFD700',
-              fontSize: '0.8rem',
-              letterSpacing: '0.4em',
-              textTransform: 'uppercase',
-              mb: 2,
-              opacity: 0.9,
-            }}
-          >
-            🕉️ &nbsp; JAI SHRI RAM &nbsp; 🕉️
-          </Typography>
-
           {/* Property name */}
           <Typography
             variant="h1"

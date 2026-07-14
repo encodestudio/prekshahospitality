@@ -29,7 +29,7 @@
         <strong>Check-out:</strong> {{ booking.check_out_date|date:"d M Y" }}
       </div>
       {% if booking.admin_notes %}<p><strong>Note from our team:</strong> {{ booking.admin_notes }}</p>{% endif %}
-      {% if property.phone %}<p>For queries: <strong>{{ property.phone }}</strong></p>{% endif %}
+      {% if property.primary_phone %}<p>For queries: <strong>{{ property.primary_phone }}</strong></p>{% endif %}
     </div>
     <div class="footer">🕉️ <strong>Preksha Hospitality</strong> — Where Every Stay is Divine</div>
   </div>

@@ -61,7 +61,6 @@
     <!-- Header -->
     <div class="header">
       <div class="om">🕉️</div>
-      <h1>Jai Shri Ram!</h1>
       <div class="subtitle">BOOKING REQUEST RECEIVED</div>
     </div>
 
@@ -148,10 +147,10 @@
         Our team will review your request and reach out to you on <strong>{{ booking.mobile_number }}</strong> or this email to confirm. Please keep your phone accessible.
       </div>
 
-      {% if property.phone %}
+      {% if property.primary_phone %}
       <div class="contact-bar">
-        📞 For urgent queries: <strong>{{ property.phone }}</strong>
-        {% if property.email %} &nbsp;|&nbsp; ✉️ <a href="mailto:{{ property.email }}">{{ property.email }}</a>{% endif %}
+        📞 For urgent queries: <strong>{{ property.primary_phone }}</strong>
+        {% if property.primary_email %} &nbsp;|&nbsp; ✉️ <a href="mailto:{{ property.primary_email }}">{{ property.primary_email }}</a>{% endif %}
       </div>
       {% endif %}
     </div>

@@ -51,15 +51,12 @@ export default function Header({ property }) {
         }}
       >
         <Container maxWidth="lg">
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <Typography variant="caption" sx={{ letterSpacing: 2, color: 'rgba(255,255,255,0.9)' }}>
-              🕉️ &nbsp; JAI SHRI RAM &nbsp; 🕉️
-            </Typography>
-            {property?.phone && (
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
+            {property?.primary_phone && (
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                 <PhoneIcon sx={{ fontSize: 14, color: 'rgba(255,255,255,0.85)' }} />
                 <Typography variant="caption" sx={{ color: 'rgba(255,255,255,0.9)' }}>
-                  {property.phone}
+                  {property.primary_phone}
                 </Typography>
               </Box>
             )}
@@ -72,10 +69,8 @@ export default function Header({ property }) {
           position="sticky"
           elevation={scrolled ? 4 : 0}
           sx={{
-            background: scrolled
-              ? 'linear-gradient(135deg, #FF6B35 0%, #E55A25 100%)'
-              : 'linear-gradient(135deg, rgba(255,107,53,0.97) 0%, rgba(229,90,37,0.97) 100%)',
-            borderBottom: `1px solid rgba(255,215,0,0.3)`,
+            background: '#FFFFFF',
+            borderBottom: '1px solid #FFD9C0',
             transition: 'all 0.3s ease',
           }}
         >
@@ -103,7 +98,7 @@ export default function Header({ property }) {
                       component={Link}
                       to={link.to}
                       sx={{
-                        color: isActive(link.to) ? '#FFD700' : 'rgba(255,255,255,0.92)',
+                        color: isActive(link.to) ? '#FF6B35' : '#2C1810',
                         fontSize: '0.75rem',
                         letterSpacing: '0.1em',
                         fontWeight: isActive(link.to) ? 700 : 400,
@@ -111,13 +106,13 @@ export default function Header({ property }) {
                         py: 0.75,
                         textTransform: 'uppercase',
                         borderBottom: isActive(link.to)
-                          ? '2px solid #FFD700'
+                          ? '2px solid #FF6B35'
                           : '2px solid transparent',
                         borderRadius: 0,
                         '&:hover': {
-                          color: '#FFD700',
-                          backgroundColor: 'rgba(255,215,0,0.1)',
-                          borderBottom: '2px solid #FFD700',
+                          color: '#FF6B35',
+                          backgroundColor: 'rgba(255,107,53,0.08)',
+                          borderBottom: '2px solid #FF6B35',
                         },
                         transition: 'all 0.2s ease',
                       }}
@@ -146,7 +141,7 @@ export default function Header({ property }) {
                 <IconButton
                   color="inherit"
                   onClick={() => setDrawerOpen(true)}
-                  sx={{ color: '#FFD700' }}
+                  sx={{ color: '#FF6B35' }}
                 >
                   <MenuIcon />
                 </IconButton>

@@ -1,5 +1,8 @@
 from rest_framework import serializers
-from .models import Amenity, City, CityPhoto, PlaceToVisit, Property, PropertyAmenity, PropertyPhoto, RoomCategory, RoomPhoto
+from .models import (
+    Amenity, City, CityPhoto, PlaceToVisit, Property, PropertyAmenity,
+    PropertyEmail, PropertyPhone, PropertyPhoto, RoomCategory, RoomPhoto,
+)
 
 
 class PlaceToVisitSerializer(serializers.ModelSerializer):
@@ -69,6 +72,18 @@ class PropertyPhotoSerializer(serializers.ModelSerializer):
         fields = ['id', 'photo', 'caption', 'is_primary', 'order']
 
 
+class PropertyPhoneSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PropertyPhone
+        fields = ['id', 'phone', 'label', 'is_primary', 'order']
+
+
+class PropertyEmailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PropertyEmail
+        fields = ['id', 'email', 'label', 'is_primary', 'order']
+
+
 class PropertyAmenitySerializer(serializers.ModelSerializer):
     amenity = AmenitySerializer(read_only=True)
 
@@ -112,6 +127,10 @@ class PropertyDetailSerializer(serializers.ModelSerializer):
     photos = PropertyPhotoSerializer(many=True, read_only=True)
     property_amenities = PropertyAmenitySerializer(many=True, read_only=True)
     room_categories = RoomCategorySerializer(many=True, read_only=True)
+    phones = PropertyPhoneSerializer(many=True, read_only=True)
+    emails = PropertyEmailSerializer(many=True, read_only=True)
+    primary_phone = serializers.ReadOnlyField()
+    primary_email = serializers.ReadOnlyField()
 
     class Meta:
         model = Property
@@ -119,7 +138,7 @@ class PropertyDetailSerializer(serializers.ModelSerializer):
             'id', 'name', 'city_id', 'city_name', 'location', 'address',
             'description', 'short_description',
             'latitude', 'longitude',
-            'phone', 'email', 'whatsapp_number',
+            'phones', 'emails', 'primary_phone', 'primary_email', 'whatsapp_number',
             'is_active',
             'photos', 'property_amenities', 'room_categories',
         ]

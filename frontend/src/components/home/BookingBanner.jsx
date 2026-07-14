@@ -70,10 +70,10 @@ export default function BookingBanner({ property }) {
                 Book Your Stay Now
               </Button>
               <Box sx={{ display: 'flex', gap: 2 }}>
-                {property?.phone && (
+                {property?.primary_phone && (
                   <Button
                     component="a"
-                    href={`tel:${property.phone}`}
+                    href={`tel:${property.primary_phone}`}
                     variant="outlined"
                     startIcon={<PhoneIcon />}
                     fullWidth

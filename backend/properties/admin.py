@@ -1,6 +1,9 @@
 from django.contrib import admin
 from django.utils.html import format_html
-from .models import Amenity, City, CityPhoto, PlaceToVisit, Property, PropertyAmenity, PropertyPhoto, RoomCategory, RoomPhoto
+from .models import (
+    Amenity, City, CityPhoto, PlaceToVisit, Property, PropertyAmenity,
+    PropertyEmail, PropertyPhone, PropertyPhoto, RoomCategory, RoomPhoto,
+)
 
 
 @admin.register(Amenity)
@@ -49,6 +52,18 @@ class RoomPhotoInline(admin.TabularInline):
     photo_preview.short_description = 'Preview'
 
 
+class PropertyPhoneInline(admin.TabularInline):
+    model = PropertyPhone
+    extra = 1
+    fields = ['phone', 'label', 'is_primary', 'order']
+
+
+class PropertyEmailInline(admin.TabularInline):
+    model = PropertyEmail
+    extra = 1
+    fields = ['email', 'label', 'is_primary', 'order']
+
+
 class RoomCategoryInline(admin.StackedInline):
     model = RoomCategory
     extra = 0
@@ -62,7 +77,7 @@ class PropertyAdmin(admin.ModelAdmin):
     list_filter = ['city', 'is_active']
     search_fields = ['name', 'city__name', 'location', 'address']
     list_editable = ['is_active']
-    inlines = [PropertyPhotoInline, PropertyAmenityInline, RoomCategoryInline]
+    inlines = [PropertyPhoneInline, PropertyEmailInline, PropertyPhotoInline, PropertyAmenityInline, RoomCategoryInline]
     fieldsets = (
         ('Basic Info', {
             'fields': ('name', 'city', 'location', 'address', 'is_active')
@@ -71,7 +86,8 @@ class PropertyAdmin(admin.ModelAdmin):
             'fields': ('short_description', 'description')
         }),
         ('Contact', {
-            'fields': ('phone', 'email', 'whatsapp_number')
+            'fields': ('whatsapp_number',),
+            'description': 'Add phone numbers and email addresses below. Mark one of each as primary.',
         }),
         ('Location', {
             'fields': ('latitude', 'longitude'),

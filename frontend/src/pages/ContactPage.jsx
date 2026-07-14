@@ -92,12 +92,24 @@ export default function ContactPage() {
               <Stack spacing={3}>
                 {[
                   { icon: <LocationOnIcon sx={{ color: '#FF6B35', fontSize: 28 }} />, label: 'Address', value: property?.address },
-                  { icon: <PhoneIcon sx={{ color: '#FF6B35', fontSize: 28 }} />, label: 'Phone', value: property?.phone, href: `tel:${property?.phone}` },
-                  { icon: <EmailIcon sx={{ color: '#FF6B35', fontSize: 28 }} />, label: 'Email', value: property?.email, href: `mailto:${property?.email}` },
+                  ...(property?.phones || []).map((p) => ({
+                    icon: <PhoneIcon sx={{ color: '#FF6B35', fontSize: 28 }} />,
+                    label: p.label ? `Phone — ${p.label}` : 'Phone',
+                    value: p.phone,
+                    href: `tel:${p.phone}`,
+                    key: `phone-${p.id}`,
+                  })),
+                  ...(property?.emails || []).map((e) => ({
+                    icon: <EmailIcon sx={{ color: '#FF6B35', fontSize: 28 }} />,
+                    label: e.label ? `Email — ${e.label}` : 'Email',
+                    value: e.email,
+                    href: `mailto:${e.email}`,
+                    key: `email-${e.id}`,
+                  })),
                   { icon: <WhatsAppIcon sx={{ color: '#25D366', fontSize: 28 }} />, label: 'WhatsApp', value: property?.whatsapp_number, href: `https://wa.me/${property?.whatsapp_number}` },
                 ].filter((item) => item.value).map((item) => (
                   <Paper
-                    key={item.label}
+                    key={item.key || item.label}
                     elevation={0}
                     sx={{ p: 2.5, display: 'flex', gap: 2, border: '1px solid #FFD9C0', borderRadius: 2 }}
                   >

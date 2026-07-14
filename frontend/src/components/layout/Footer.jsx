@@ -19,8 +19,8 @@ export default function Footer({ property }) {
     <Box
       component="footer"
       sx={{
-        background: 'linear-gradient(180deg, #4A1A00 0%, #6B2800 50%, #4A1A00 100%)',
-        color: '#FFE8CC',
+        background: '#FBF3E7',
+        color: '#2C1810',
         pt: 8,
         pb: 3,
         borderTop: '4px solid #FF6B35',
@@ -39,7 +39,7 @@ export default function Footer({ property }) {
             </Box>
             <Typography
               variant="body2"
-              sx={{ color: 'rgba(255,232,204,0.85)', lineHeight: 1.8, mb: 3, fontStyle: 'italic' }}
+              sx={{ color: '#6B4226', lineHeight: 1.8, mb: 3, fontStyle: 'italic' }}
             >
               {property?.short_description || 'Where Every Stay is Divine. Experience the sacred tranquility of our retreats, blending spiritual heritage with modern comforts.'}
             </Typography>
@@ -59,12 +59,12 @@ export default function Footer({ property }) {
                   aria-label={social.label}
                   size="small"
                   sx={{
-                    color: '#FFE8CC',
-                    border: '1px solid rgba(255,215,0,0.3)',
+                    color: '#6B4226',
+                    border: '1px solid rgba(255,107,53,0.35)',
                     '&:hover': {
-                      color: '#FFD700',
-                      border: '1px solid #FFD700',
-                      backgroundColor: 'rgba(255,215,0,0.12)',
+                      color: '#FF6B35',
+                      border: '1px solid #FF6B35',
+                      backgroundColor: 'rgba(255,107,53,0.1)',
                     },
                     transition: 'all 0.2s ease',
                   }}
@@ -97,11 +97,11 @@ export default function Footer({ property }) {
                 to={link.to}
                 sx={{
                   display: 'block',
-                  color: 'rgba(255,232,204,0.85)',
+                  color: '#6B4226',
                   textDecoration: 'none',
                   mb: 1,
                   fontSize: '0.9rem',
-                  '&:hover': { color: '#FFD700', pl: 0.5 },
+                  '&:hover': { color: '#FF6B35', pl: 0.5 },
                   transition: 'all 0.2s ease',
                 }}
               >
@@ -130,11 +130,11 @@ export default function Footer({ property }) {
                 href="#"
                 sx={{
                   display: 'block',
-                  color: 'rgba(255,232,204,0.85)',
+                  color: '#6B4226',
                   textDecoration: 'none',
                   mb: 1,
                   fontSize: '0.9rem',
-                  '&:hover': { color: '#FFD700', pl: 0.5 },
+                  '&:hover': { color: '#FF6B35', pl: 0.5 },
                   transition: 'all 0.2s ease',
                 }}
               >
@@ -155,22 +155,22 @@ export default function Footer({ property }) {
               {property?.address && (
                 <Box sx={{ display: 'flex', gap: 1.5 }}>
                   <LocationOnIcon sx={{ color: '#FF6B35', fontSize: 20, mt: 0.3, flexShrink: 0 }} />
-                  <Typography variant="body2" sx={{ color: 'rgba(255,232,204,0.88)', lineHeight: 1.7 }}>
+                  <Typography variant="body2" sx={{ color: '#6B4226', lineHeight: 1.7 }}>
                     {property.address}
                   </Typography>
                 </Box>
               )}
-              {property?.phone && (
-                <Box sx={{ display: 'flex', gap: 1.5, alignItems: 'center' }}>
+              {(property?.phones || []).map((p) => (
+                <Box key={`phone-${p.id}`} sx={{ display: 'flex', gap: 1.5, alignItems: 'center' }}>
                   <PhoneIcon sx={{ color: '#FF6B35', fontSize: 18 }} />
                   <MuiLink
-                    href={`tel:${property.phone}`}
-                    sx={{ color: 'rgba(255,232,204,0.88)', textDecoration: 'none', '&:hover': { color: '#FFD700' } }}
+                    href={`tel:${p.phone}`}
+                    sx={{ color: '#6B4226', textDecoration: 'none', '&:hover': { color: '#FF6B35' } }}
                   >
-                    {property.phone}
+                    {p.phone}{p.label ? ` (${p.label})` : ''}
                   </MuiLink>
                 </Box>
-              )}
+              ))}
               {property?.whatsapp_number && (
                 <Box sx={{ display: 'flex', gap: 1.5, alignItems: 'center' }}>
                   <WhatsAppIcon sx={{ color: '#25D366', fontSize: 18 }} />
@@ -178,34 +178,34 @@ export default function Footer({ property }) {
                     href={`https://wa.me/${property.whatsapp_number}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    sx={{ color: 'rgba(255,232,204,0.88)', textDecoration: 'none', '&:hover': { color: '#25D366' } }}
+                    sx={{ color: '#6B4226', textDecoration: 'none', '&:hover': { color: '#25D366' } }}
                   >
                     {property.whatsapp_number}
                   </MuiLink>
                 </Box>
               )}
-              {property?.email && (
-                <Box sx={{ display: 'flex', gap: 1.5, alignItems: 'center' }}>
+              {(property?.emails || []).map((e) => (
+                <Box key={`email-${e.id}`} sx={{ display: 'flex', gap: 1.5, alignItems: 'center' }}>
                   <EmailIcon sx={{ color: '#FF6B35', fontSize: 18 }} />
                   <MuiLink
-                    href={`mailto:${property.email}`}
-                    sx={{ color: 'rgba(255,232,204,0.88)', textDecoration: 'none', '&:hover': { color: '#FFD700' } }}
+                    href={`mailto:${e.email}`}
+                    sx={{ color: '#6B4226', textDecoration: 'none', '&:hover': { color: '#FF6B35' } }}
                   >
-                    {property.email}
+                    {e.email}{e.label ? ` (${e.label})` : ''}
                   </MuiLink>
                 </Box>
-              )}
+              ))}
             </Stack>
           </Grid>
         </Grid>
 
-        <Divider sx={{ my: 4, borderColor: 'rgba(255,215,0,0.25)' }} />
+        <Divider sx={{ my: 4, borderColor: '#FFD9C0' }} />
 
         <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', alignItems: 'center', gap: 1 }}>
-          <Typography variant="caption" sx={{ color: 'rgba(255,232,204,0.6)', textAlign: 'center' }}>
+          <Typography variant="caption" sx={{ color: '#8A6952', textAlign: 'center' }}>
             © {currentYear} Preksha Hospitality. All rights reserved.
           </Typography>
-          <Typography variant="caption" sx={{ color: 'rgba(255,232,204,0.55)', textAlign: 'center' }}>
+          <Typography variant="caption" sx={{ color: '#8A6952', textAlign: 'center' }}>
             🕉️ &nbsp; सर्वे भवन्तु सुखिनः &nbsp; 🕉️
           </Typography>
         </Box>

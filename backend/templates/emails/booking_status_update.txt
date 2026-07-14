@@ -8,6 +8,6 @@ Reference: {{ booking.booking_reference }}
 Check-in: {{ booking.check_in_date|date:"d M Y" }}
 Check-out: {{ booking.check_out_date|date:"d M Y" }}
 {% if booking.admin_notes %}Note: {{ booking.admin_notes }}{% endif %}
-{% if property.phone %}For queries: {{ property.phone }}{% endif %}
+{% if property.primary_phone %}For queries: {{ property.primary_phone }}{% endif %}
 
 🕉️ Preksha Hospitality — Where Every Stay is Divine

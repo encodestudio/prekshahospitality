@@ -29,8 +29,6 @@ class Property(models.Model):
     amenities = models.ManyToManyField(Amenity, through='PropertyAmenity', blank=True)
     latitude = models.DecimalField(max_digits=10, decimal_places=7, null=True, blank=True)
     longitude = models.DecimalField(max_digits=10, decimal_places=7, null=True, blank=True)
-    phone = models.CharField(max_length=20, blank=True)
-    email = models.EmailField(blank=True)
     whatsapp_number = models.CharField(max_length=20, blank=True)
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -43,6 +41,16 @@ class Property(models.Model):
 
     def __str__(self):
         return f'{self.name} - {self.city.name if self.city else "No City"}'
+
+    @property
+    def primary_phone(self):
+        phone = self.phones.filter(is_primary=True).first() or self.phones.first()
+        return phone.phone if phone else ''
+
+    @property
+    def primary_email(self):
+        email = self.emails.filter(is_primary=True).first() or self.emails.first()
+        return email.email if email else ''
 
 
 class PropertyAmenity(models.Model):
@@ -71,6 +79,38 @@ class PropertyPhoto(models.Model):
 
     def __str__(self):
         return f'{self.property.name} - Photo {self.id}'
+
+
+class PropertyPhone(models.Model):
+    property = models.ForeignKey(Property, on_delete=models.CASCADE, related_name='phones')
+    phone = models.CharField(max_length=20)
+    label = models.CharField(max_length=100, blank=True, help_text='e.g., Reception, Manager')
+    is_primary = models.BooleanField(default=False)
+    order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ['-is_primary', 'order']
+        verbose_name = 'Property Phone'
+        verbose_name_plural = 'Property Phones'
+
+    def __str__(self):
+        return f'{self.property.name} - {self.phone}'
+
+
+class PropertyEmail(models.Model):
+    property = models.ForeignKey(Property, on_delete=models.CASCADE, related_name='emails')
+    email = models.EmailField()
+    label = models.CharField(max_length=100, blank=True, help_text='e.g., Reservations, Support')
+    is_primary = models.BooleanField(default=False)
+    order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ['-is_primary', 'order']
+        verbose_name = 'Property Email'
+        verbose_name_plural = 'Property Emails'
+
+    def __str__(self):
+        return f'{self.property.name} - {self.email}'
 
 
 class RoomCategory(models.Model):

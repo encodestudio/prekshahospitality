@@ -41,16 +41,16 @@ export default function PropertyInfo({ property }) {
                   {property.address}
                 </Typography>
               </Box>
-              {property.phone && (
+              {property.primary_phone && (
                 <Box sx={{ display: 'flex', gap: 1.5, alignItems: 'center' }}>
                   <PhoneIcon sx={{ color: '#FF6B35', flexShrink: 0 }} />
-                  <Typography variant="body2" sx={{ color: '#6B4226' }}>{property.phone}</Typography>
+                  <Typography variant="body2" sx={{ color: '#6B4226' }}>{property.primary_phone}</Typography>
                 </Box>
               )}
-              {property.email && (
+              {property.primary_email && (
                 <Box sx={{ display: 'flex', gap: 1.5, alignItems: 'center' }}>
                   <EmailIcon sx={{ color: '#FF6B35', flexShrink: 0 }} />
-                  <Typography variant="body2" sx={{ color: '#6B4226' }}>{property.email}</Typography>
+                  <Typography variant="body2" sx={{ color: '#6B4226' }}>{property.primary_email}</Typography>
                 </Box>
               )}
             </Stack>
