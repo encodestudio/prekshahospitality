@@ -110,6 +110,10 @@ STORAGES = {
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+# Raise upload size limits for room/property photo uploads (Django defaults to 2.5MB)
+DATA_UPLOAD_MAX_MEMORY_SIZE = 20 * 1024 * 1024  # 20MB
+FILE_UPLOAD_MAX_MEMORY_SIZE = 20 * 1024 * 1024  # 20MB
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # CORS
@@ -159,6 +163,8 @@ EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
 DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default=EMAIL_HOST_USER or 'noreply@prekshahospitality.com')
 BOOKING_MANAGER_EMAIL = config('BOOKING_MANAGER_EMAIL', default='shivam@encodestudio.in')
 CONTACT_EMAIL = config('CONTACT_EMAIL', default='contact@prekshahospitality.com')
+# Copied on every booking-request confirmation and status-update email, alongside the guest
+BOOKINGS_TEAM_EMAIL = config('BOOKINGS_TEAM_EMAIL', default='bookings@prekshahospitality.com')
 
 if SENDGRID_API_KEY and not SENDGRID_API_KEY.startswith('your_'):
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -177,8 +183,13 @@ else:
     # No credentials configured — print to terminal so you can see email content during dev
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-# Twilio WhatsApp
-TWILIO_ACCOUNT_SID = config('TWILIO_ACCOUNT_SID', default='')
-TWILIO_AUTH_TOKEN = config('TWILIO_AUTH_TOKEN', default='')
-TWILIO_WHATSAPP_FROM = config('TWILIO_WHATSAPP_FROM', default='whatsapp:+14155238886')
+# ICS WhatsApp Business API (WABA) — booking confirmation & status update messages.
+# Template ids come from templates created & approved via the ICS dashboard/API
+# (see "ICS WABA API Documentation" for the create-template payloads).
+ICS_WHATSAPP_USER = config('ICS_WHATSAPP_USER', default='')
+ICS_WHATSAPP_PASS = config('ICS_WHATSAPP_PASS', default='')
+ICS_WHATSAPP_FROM = config('ICS_WHATSAPP_FROM', default='')  # registered WABA number, e.g. 9180xxxxxxx (no +)
+ICS_WHATSAPP_BOOKING_TEMPLATE_ID = config('ICS_WHATSAPP_BOOKING_TEMPLATE_ID', default='')
+ICS_WHATSAPP_CONFIRMED_TEMPLATE_ID = config('ICS_WHATSAPP_CONFIRMED_TEMPLATE_ID', default='')
+ICS_WHATSAPP_CANCELLED_TEMPLATE_ID = config('ICS_WHATSAPP_CANCELLED_TEMPLATE_ID', default='')
 

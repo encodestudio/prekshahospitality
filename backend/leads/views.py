@@ -9,7 +9,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 from bookings.models import BookingRequest
 from bookings.serializers import BookingManagerUpdateSerializer
-from bookings.tasks import send_booking_status_update
+from bookings.tasks import send_booking_status_update, send_booking_status_whatsapp
 from .models import LeadNote, LeadActivity
 from .serializers import (
     LeadDetailSerializer,
@@ -114,6 +114,10 @@ class LeadDetailView(generics.RetrieveUpdateDestroyAPIView):
                     send_booking_status_update(instance.id)
                 except Exception as exc:
                     logger.error('Status update email failed for %s: %s', instance.booking_reference, exc)
+                try:
+                    send_booking_status_whatsapp(instance.id)
+                except Exception as exc:
+                    logger.error('Status update WhatsApp failed for %s: %s', instance.booking_reference, exc)
 
         refreshed = (
             BookingRequest.objects.select_related('venue', 'room_category')
@@ -143,6 +147,10 @@ class LeadStatusUpdateView(generics.UpdateAPIView):
                 send_booking_status_update(instance.id)
             except Exception as exc:
                 logger.error('Status update email failed for %s: %s', instance.booking_reference, exc)
+            try:
+                send_booking_status_whatsapp(instance.id)
+            except Exception as exc:
+                logger.error('Status update WhatsApp failed for %s: %s', instance.booking_reference, exc)
 
 
 class LeadNoteCreateView(generics.CreateAPIView):

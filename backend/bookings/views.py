@@ -27,6 +27,16 @@ class BookingRequestCreateView(APIView):
                     booking.booking_reference, exc,
                 )
 
+            # Send confirmation WhatsApp — failure must never block the booking response
+            try:
+                from .tasks import send_booking_confirmation_whatsapp
+                send_booking_confirmation_whatsapp(booking.id)
+            except Exception as exc:
+                logger.error(
+                    'Booking confirmation WhatsApp failed for %s: %s',
+                    booking.booking_reference, exc,
+                )
+
             detail_serializer = BookingRequestDetailSerializer(booking)
             return Response(
                 {
@@ -53,3 +63,27 @@ class BookingStatusView(APIView):
                 {'error': 'Booking not found.'},
                 status=status.HTTP_404_NOT_FOUND,
             )
+
+
+class WhatsAppDeliveryCallbackView(APIView):
+    """
+    Delivery-status callback for the ICS WABA API (see doc section 4.1).
+    ICS calls this URL with the message's status whenever it changes
+    (sent/delivered/read/failed) — register the deployed URL with ICS.
+    """
+    permission_classes = [AllowAny]
+
+    def _handle(self, request):
+        params = request.query_params
+        logger.info(
+            'WhatsApp delivery callback: status=%s mobile=%s mid=%s smsgid=%s sender=%s notes=%s time=%s',
+            params.get('qStatus'), params.get('qMobile'), params.get('qMsgRef'),
+            params.get('SMSMSGID'), params.get('SENDERID'), params.get('NOTES'), params.get('qDTime'),
+        )
+        return Response({'status': 'ok'})
+
+    def get(self, request):
+        return self._handle(request)
+
+    def post(self, request):
+        return self._handle(request)

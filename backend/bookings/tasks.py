@@ -19,19 +19,22 @@ def send_booking_confirmation_email(booking_id):
         'manage_url': f'{settings.FRONTEND_URL}/manage',
     }
 
-    # ── Guest confirmation ────────────────────────────────────────────────────
+    # ── Guest confirmation (copied to the bookings team) ───────────────────────
     guest_subject = (
         f'Booking Request Received — {booking.booking_reference} | {booking.venue.name}'
     )
+    guest_recipients = [booking.email]
+    if settings.BOOKINGS_TEAM_EMAIL:
+        guest_recipients.append(settings.BOOKINGS_TEAM_EMAIL)
     send_mail(
         subject=guest_subject,
         message=render_to_string('emails/booking_confirmation.txt', context),
         from_email=settings.DEFAULT_FROM_EMAIL,
-        recipient_list=[booking.email],
+        recipient_list=guest_recipients,
         html_message=render_to_string('emails/booking_confirmation.html', context),
         fail_silently=False,
     )
-    logger.info('Booking confirmation email sent to guest for %s', booking.booking_reference)
+    logger.info('Booking confirmation email sent to %s for %s', guest_recipients, booking.booking_reference)
 
     # ── Manager notification ──────────────────────────────────────────────────
     manager_email = getattr(settings, 'BOOKING_MANAGER_EMAIL', None)
@@ -79,12 +82,93 @@ def send_booking_status_update(booking_id):
     html_message = render_to_string('emails/booking_status_update.html', context)
     plain_message = render_to_string('emails/booking_status_update.txt', context)
 
+    recipients = [booking.email]
+    if settings.BOOKINGS_TEAM_EMAIL:
+        recipients.append(settings.BOOKINGS_TEAM_EMAIL)
     send_mail(
         subject=subject,
         message=plain_message,
         from_email=settings.DEFAULT_FROM_EMAIL,
-        recipient_list=[booking.email],
+        recipient_list=recipients,
         html_message=html_message,
         fail_silently=False,
     )
-    logger.info('Booking status update email sent for %s → %s', booking.booking_reference, booking.status)
+    logger.info('Booking status update email sent to %s for %s → %s', recipients, booking.booking_reference, booking.status)
+
+
+def send_booking_confirmation_whatsapp(booking_id):
+    """Send a WhatsApp booking-received message to the guest via the ICS WABA API."""
+    from .models import BookingRequest
+    from .whatsapp_client import send_whatsapp_template
+
+    booking = BookingRequest.objects.select_related('venue').get(id=booking_id)
+
+    template_id = settings.ICS_WHATSAPP_BOOKING_TEMPLATE_ID
+    if not template_id:
+        logger.info(
+            'ICS_WHATSAPP_BOOKING_TEMPLATE_ID not set — skipping WhatsApp confirmation for %s',
+            booking.booking_reference,
+        )
+        return
+
+    send_whatsapp_template(
+        to=booking.mobile_number,
+        template_id=template_id,
+        template_name='booking_request',
+        placeholders=[
+            booking.guest_name,
+            booking.venue.name if booking.venue else '',
+            booking.booking_reference,
+            booking.check_in_date.strftime('%d %b %Y'),
+            booking.check_out_date.strftime('%d %b %Y'),
+        ],
+        smsgid=booking.booking_reference,
+    )
+    logger.info('Booking confirmation WhatsApp sent for %s', booking.booking_reference)
+
+
+def send_booking_status_whatsapp(booking_id):
+    """Send a WhatsApp status-update message to the guest via the ICS WABA API."""
+    from .models import BookingRequest
+    from .whatsapp_client import send_whatsapp_template
+
+    booking = BookingRequest.objects.select_related('venue').get(id=booking_id)
+    venue_name = booking.venue.name if booking.venue else ''
+
+    if booking.status == BookingRequest.STATUS_CONFIRMED:
+        template_id = settings.ICS_WHATSAPP_CONFIRMED_TEMPLATE_ID
+        template_name = 'booking_confirmed'
+        placeholders = [
+            booking.guest_name,
+            venue_name,
+            booking.booking_reference,
+            booking.check_in_date.strftime('%d %b %Y'),
+            booking.check_out_date.strftime('%d %b %Y'),
+        ]
+    elif booking.status == BookingRequest.STATUS_CANCELLED:
+        template_id = settings.ICS_WHATSAPP_CANCELLED_TEMPLATE_ID
+        template_name = 'booking_cancelled'
+        placeholders = [
+            booking.guest_name,
+            venue_name,
+            booking.booking_reference,
+            booking.check_in_date.strftime('%d %b %Y'),
+        ]
+    else:
+        return
+
+    if not template_id:
+        logger.info(
+            'No WhatsApp template configured for status %s — skipping for %s',
+            booking.status, booking.booking_reference,
+        )
+        return
+
+    send_whatsapp_template(
+        to=booking.mobile_number,
+        template_id=template_id,
+        template_name=template_name,
+        placeholders=placeholders,
+        smsgid=booking.booking_reference,
+    )
+    logger.info('Booking status WhatsApp sent for %s → %s', booking.booking_reference, booking.status)

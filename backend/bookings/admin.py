@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.utils.html import format_html
 from .models import BookingRequest
-from .tasks import send_booking_status_update
+from .tasks import send_booking_status_update, send_booking_status_whatsapp
 
 
 @admin.register(BookingRequest)
@@ -76,4 +76,11 @@ class BookingRequestAdmin(admin.ModelAdmin):
                 import logging
                 logging.getLogger(__name__).error(
                     'Status update email failed for %s: %s', obj.booking_reference, exc
+                )
+            try:
+                send_booking_status_whatsapp(obj.id)
+            except Exception as exc:
+                import logging
+                logging.getLogger(__name__).error(
+                    'Status update WhatsApp failed for %s: %s', obj.booking_reference, exc
                 )
