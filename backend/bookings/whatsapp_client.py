@@ -21,9 +21,12 @@ def _normalize_mobile(number: str) -> str:
     return digits
 
 
-def send_whatsapp_template(to, template_id, template_name='', placeholders=None, smsgid=None):
+def send_whatsapp_template(to, template_name, placeholders=None, smsgid=None):
     """
     Send a pre-approved WhatsApp template message via the ICS WABA API.
+
+    Per ICS support: the "templateid" field must hold the template's NAME
+    (e.g. "booking_confirmed"), not the numeric id returned by getTemplates.
 
     `to` accepts any common Indian mobile format — the country code (91) is
     added automatically after normalisation.
@@ -33,8 +36,8 @@ def send_whatsapp_template(to, template_id, template_name='', placeholders=None,
         raise WhatsAppSendError('ICS WhatsApp credentials are not configured')
     if not settings.ICS_WHATSAPP_FROM:
         raise WhatsAppSendError('ICS_WHATSAPP_FROM (registered WABA number) is not configured')
-    if not template_id:
-        raise WhatsAppSendError('No WhatsApp template id configured')
+    if not template_name:
+        raise WhatsAppSendError('No WhatsApp template name configured')
 
     normalized = _normalize_mobile(to)
     if len(normalized) != 10:
@@ -47,13 +50,13 @@ def send_whatsapp_template(to, template_id, template_name='', placeholders=None,
             {
                 'from': settings.ICS_WHATSAPP_FROM,
                 'to': f'91{normalized}',
-                'templateid': template_id,
-                'templatename': template_name,
+                'templateid': template_name,
+                'url': '',
                 'smsgid': smsgid or '',
                 'placeholders': [
-                    {str(i): value for i, value in enumerate(placeholders or [], start=1)}
+                    {str(i): value for i, value in enumerate(placeholders or [])}
                 ],
-                'buttons': [],
+                'buttons': [{}],
             }
         ],
     }
@@ -74,5 +77,5 @@ def send_whatsapp_template(to, template_id, template_name='', placeholders=None,
             f"ICS WhatsApp API error {err.get('status')}: {err.get('title')} — {err.get('detail')}"
         )
 
-    logger.info('WhatsApp template %s sent to 91%s (response: %s)', template_id, normalized, data)
+    logger.info('WhatsApp template %s sent to 91%s (response: %s)', template_name, normalized, data)
     return data

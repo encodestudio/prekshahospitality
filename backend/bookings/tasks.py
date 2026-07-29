@@ -103,17 +103,8 @@ def send_booking_confirmation_whatsapp(booking_id):
 
     booking = BookingRequest.objects.select_related('venue').get(id=booking_id)
 
-    template_id = settings.ICS_WHATSAPP_BOOKING_TEMPLATE_ID
-    if not template_id:
-        logger.info(
-            'ICS_WHATSAPP_BOOKING_TEMPLATE_ID not set — skipping WhatsApp confirmation for %s',
-            booking.booking_reference,
-        )
-        return
-
     send_whatsapp_template(
         to=booking.mobile_number,
-        template_id=template_id,
         template_name='booking_request',
         placeholders=[
             booking.guest_name,
@@ -136,7 +127,6 @@ def send_booking_status_whatsapp(booking_id):
     venue_name = booking.venue.name if booking.venue else ''
 
     if booking.status == BookingRequest.STATUS_CONFIRMED:
-        template_id = settings.ICS_WHATSAPP_CONFIRMED_TEMPLATE_ID
         template_name = 'booking_confirmed'
         placeholders = [
             booking.guest_name,
@@ -146,7 +136,6 @@ def send_booking_status_whatsapp(booking_id):
             booking.check_out_date.strftime('%d %b %Y'),
         ]
     elif booking.status == BookingRequest.STATUS_CANCELLED:
-        template_id = settings.ICS_WHATSAPP_CANCELLED_TEMPLATE_ID
         template_name = 'booking_cancelled'
         placeholders = [
             booking.guest_name,
@@ -157,16 +146,8 @@ def send_booking_status_whatsapp(booking_id):
     else:
         return
 
-    if not template_id:
-        logger.info(
-            'No WhatsApp template configured for status %s — skipping for %s',
-            booking.status, booking.booking_reference,
-        )
-        return
-
     send_whatsapp_template(
         to=booking.mobile_number,
-        template_id=template_id,
         template_name=template_name,
         placeholders=placeholders,
         smsgid=booking.booking_reference,

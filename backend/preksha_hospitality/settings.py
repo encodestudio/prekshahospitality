@@ -184,12 +184,10 @@ else:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # ICS WhatsApp Business API (WABA) — booking confirmation & status update messages.
-# Template ids come from templates created & approved via the ICS dashboard/API
-# (see "ICS WABA API Documentation" for the create-template payloads).
+# Templates (booking_request, booking_confirmed, booking_cancelled) are created &
+# approved via the ICS dashboard/API — the template NAME is sent directly as the
+# "templateid" field per ICS support, so no separate id setting is needed here.
 ICS_WHATSAPP_USER = config('ICS_WHATSAPP_USER', default='')
 ICS_WHATSAPP_PASS = config('ICS_WHATSAPP_PASS', default='')
 ICS_WHATSAPP_FROM = config('ICS_WHATSAPP_FROM', default='')  # registered WABA number, e.g. 9180xxxxxxx (no +)
-ICS_WHATSAPP_BOOKING_TEMPLATE_ID = config('ICS_WHATSAPP_BOOKING_TEMPLATE_ID', default='')
-ICS_WHATSAPP_CONFIRMED_TEMPLATE_ID = config('ICS_WHATSAPP_CONFIRMED_TEMPLATE_ID', default='')
-ICS_WHATSAPP_CANCELLED_TEMPLATE_ID = config('ICS_WHATSAPP_CANCELLED_TEMPLATE_ID', default='')
 
