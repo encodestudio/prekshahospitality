@@ -110,9 +110,12 @@ STORAGES = {
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-# Raise upload size limits for room/property photo uploads (Django defaults to 2.5MB)
-DATA_UPLOAD_MAX_MEMORY_SIZE = 20 * 1024 * 1024  # 20MB
-FILE_UPLOAD_MAX_MEMORY_SIZE = 20 * 1024 * 1024  # 20MB
+# Raise the total-request-size cap for admin pages that upload several room/property
+# photos at once (Django defaults to 2.5MB). FILE_UPLOAD_MAX_MEMORY_SIZE is left at
+# Django's own default (~2.5MB) on purpose — that's the per-file threshold above which
+# an upload streams to a temp file on disk instead of being buffered in memory, which
+# matters on a memory-constrained server even though the overall request may be large.
+DATA_UPLOAD_MAX_MEMORY_SIZE = 100 * 1024 * 1024  # 100MB
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
