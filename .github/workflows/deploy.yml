@@ -29,6 +29,6 @@ jobs:
             sudo systemctl restart gunicorn
 
             cd ../frontend
-            npm ci
+            npm install
             npm run build
             sudo rsync -av --delete build/ /var/www/preksha/
