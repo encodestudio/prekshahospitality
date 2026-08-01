@@ -92,7 +92,7 @@ TIME_ZONE = 'Asia/Kolkata'
 USE_I18N = True
 USE_TZ = False
 
-STATIC_URL = '/static/'
+STATIC_URL = '/django-static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STORAGES = {
     'staticfiles': {
