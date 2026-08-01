@@ -5,10 +5,36 @@ on:
     branches: [main]
 
 jobs:
-  deploy:
+  build-frontend:
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy over SSH
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install dependencies
+        working-directory: frontend
+        run: npm install
+
+      - name: Build
+        working-directory: frontend
+        run: npm run build
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: frontend-build
+          path: frontend/build
+          retention-days: 1
+
+  deploy:
+    needs: build-frontend
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy backend over SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.EC2_HOST }}
@@ -28,7 +54,17 @@ jobs:
             deactivate
             sudo systemctl restart gunicorn
 
-            cd ../frontend
-            npm install
-            npm run build
-            sudo rsync -av --delete build/ /var/www/preksha/
+      - uses: actions/download-artifact@v4
+        with:
+          name: frontend-build
+          path: frontend-build
+
+      - name: Sync frontend build to server
+        uses: burnett01/rsync-deployments@7.0.1
+        with:
+          switches: -avz --delete
+          path: frontend-build/
+          remote_path: /var/www/preksha/
+          remote_host: ${{ secrets.EC2_HOST }}
+          remote_user: ${{ secrets.EC2_USER }}
+          remote_key: ${{ secrets.EC2_SSH_KEY }}
