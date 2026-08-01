@@ -245,18 +245,6 @@ export default function HeroSection({ property }) {
         }}
       />
 
-      {/* Gradient overlay */}
-      <Box
-        sx={{
-          position: 'absolute',
-          inset: 0,
-          background: heroImage
-            ? 'linear-gradient(180deg, rgba(44,24,16,0.55) 0%, rgba(44,24,16,0.72) 50%, rgba(44,24,16,0.93) 100%)'
-            : 'linear-gradient(180deg, rgba(44,24,16,0.3) 0%, rgba(44,24,16,0.5) 100%)',
-          zIndex: 1,
-        }}
-      />
-
       {/* Decorative pattern */}
       <Box
         sx={{
