@@ -90,7 +90,7 @@ export default function HeroSection({ property }) {
     if (property?.city_id && cities.length > 0 && !bar.city) {
       setBar((b) => ({ ...b, city: property.city_id, venue: property.id }));
     }
-  }, [property?.city_id, cities.length]);
+  }, [property?.city_id, property?.id, cities.length, bar.city]);
 
   // Fetch properties when city changes
   useEffect(() => {

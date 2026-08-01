@@ -3,7 +3,6 @@ import { Box, Container, Grid, Typography, Divider, Stack, Paper } from '@mui/ma
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import PhoneIcon from '@mui/icons-material/Phone';
 import EmailIcon from '@mui/icons-material/Email';
-import HotelIcon from '@mui/icons-material/Hotel';
 import SectionHeading from '../common/SectionHeading';
 
 export default function PropertyInfo({ property }) {

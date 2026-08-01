@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {
   Card, CardContent, CardMedia, Box, Typography,
-  Button, Chip, Grid, IconButton, MobileStepper,
+  Button, Grid, IconButton, MobileStepper,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
 import PeopleIcon from '@mui/icons-material/People';

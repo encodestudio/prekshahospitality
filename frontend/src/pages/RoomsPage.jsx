@@ -2,7 +2,6 @@ import React from 'react';
 import { Box, Container, Grid, Typography } from '@mui/material';
 import Layout from '../components/layout/Layout';
 import RoomCard from '../components/rooms/RoomCard';
-import SectionHeading from '../components/common/SectionHeading';
 import BookingBanner from '../components/home/BookingBanner';
 import LoadingScreen from '../components/common/LoadingScreen';
 import { useProperty } from '../hooks/useProperty';

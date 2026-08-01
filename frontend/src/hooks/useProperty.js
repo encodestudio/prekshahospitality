@@ -12,7 +12,7 @@ export function useProperties(params) {
       .then((res) => setProperties(res.data.results || res.data))
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
-  }, []);
+  }, [params]);
 
   return { properties, loading, error };
 }
