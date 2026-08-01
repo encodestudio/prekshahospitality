@@ -47,7 +47,7 @@ export default function AmenitiesSection({ property }) {
     <Box
       sx={{
         py: { xs: 8, md: 12 },
-        background: 'linear-gradient(180deg, #EA580C 0%, #F97316 50%, #EA580C 100%)',
+        background: 'linear-gradient(180deg, #B8460A 0%, #D9530F 50%, #B8460A 100%)',
         position: 'relative',
         overflow: 'hidden',
         '&::before': {
@@ -149,15 +149,15 @@ export default function AmenitiesSection({ property }) {
         {regular.length > 0 && (
           <Box
             sx={{
-              background: 'rgba(255,255,255,0.1)',
-              border: '1px solid rgba(255,255,255,0.18)',
+              background: 'rgba(44,24,16,0.32)',
+              border: '1px solid rgba(255,255,255,0.16)',
               borderRadius: 3,
               p: { xs: 3, md: 4 },
             }}
           >
             <Typography
               variant="overline"
-              sx={{ color: '#FF6B35', letterSpacing: '0.2em', display: 'block', mb: 3, textAlign: 'center' }}
+              sx={{ color: '#FFD700', letterSpacing: '0.2em', display: 'block', mb: 3, textAlign: 'center' }}
             >
               All Facilities
             </Typography>
@@ -171,10 +171,11 @@ export default function AmenitiesSection({ property }) {
                       gap: 1.5,
                       p: 1.5,
                       borderRadius: 2,
-                      border: '1px solid rgba(255,255,255,0.14)',
+                      backgroundColor: 'rgba(44,24,16,0.22)',
+                      border: '1px solid rgba(255,255,255,0.16)',
                       transition: 'all 0.2s ease',
                       '&:hover': {
-                        backgroundColor: 'rgba(255,255,255,0.18)',
+                        backgroundColor: 'rgba(44,24,16,0.4)',
                         borderColor: 'rgba(255,255,255,0.35)',
                       },
                     }}
@@ -184,7 +185,7 @@ export default function AmenitiesSection({ property }) {
                     </Typography>
                     <Typography
                       variant="body2"
-                      sx={{ color: 'rgba(255,255,255,0.9)', fontSize: '0.85rem', lineHeight: 1.3 }}
+                      sx={{ color: '#FFFFFF', fontSize: '0.85rem', lineHeight: 1.3 }}
                     >
                       {pa.amenity.name}
                     </Typography>
