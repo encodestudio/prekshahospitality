@@ -68,7 +68,10 @@ class RoomCategoryInline(admin.StackedInline):
     model = RoomCategory
     extra = 0
     show_change_link = True
-    fields = ['name', 'price_per_night', 'max_occupancy', 'num_beds', 'bed_type', 'area_sqft', 'is_active', 'order']
+    fields = [
+        'name', 'price_per_night', 'offer_name', 'discount_type', 'discount_value',
+        'max_occupancy', 'num_beds', 'bed_type', 'area_sqft', 'is_active', 'order',
+    ]
 
 
 @admin.register(Property)
@@ -130,9 +133,37 @@ class CityAdmin(admin.ModelAdmin):
 
 @admin.register(RoomCategory)
 class RoomCategoryAdmin(admin.ModelAdmin):
-    list_display = ['name', 'property', 'price_per_night', 'max_occupancy', 'is_active', 'order']
-    list_filter = ['property', 'is_active']
-    search_fields = ['name', 'property__name']
+    list_display = ['name', 'property', 'price_per_night', 'discount_badge', 'max_occupancy', 'is_active', 'order']
+    list_filter = ['property', 'is_active', 'discount_type']
+    search_fields = ['name', 'property__name', 'offer_name']
     list_editable = ['price_per_night', 'is_active', 'order']
     inlines = [RoomPhotoInline]
     autocomplete_fields = ['property']
+    fieldsets = (
+        ('Basic Info', {
+            'fields': ('property', 'name', 'description', 'is_active', 'order'),
+        }),
+        ('Room Details', {
+            'fields': ('max_occupancy', 'num_beds', 'bed_type', 'area_sqft'),
+        }),
+        ('Pricing', {
+            'fields': ('price_per_night',),
+        }),
+        ('Discount / Offer', {
+            'fields': ('offer_name', 'discount_type', 'discount_value'),
+            'description': 'Leave discount type blank for no discount. Percentage should be between 0 and 100.',
+        }),
+    )
+
+    def discount_badge(self, obj):
+        if not obj.has_discount:
+            return '—'
+        return format_html(
+            '<span style="color:#B8460A;font-weight:600;">{}</span><br>'
+            '<span style="color:#888;font-size:11px;text-decoration:line-through;">₹{}</span> '
+            '<span style="color:#1a7a3c;font-size:11px;font-weight:600;">₹{}</span>',
+            obj.offer_name or 'Discount',
+            obj.price_per_night,
+            obj.discounted_price_per_night,
+        )
+    discount_badge.short_description = 'Offer'

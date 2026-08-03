@@ -1,4 +1,11 @@
+from decimal import ROUND_HALF_UP, Decimal
+
+from django.core.exceptions import ValidationError
 from django.db import models
+
+# RoomCategory below has a field literally named `property`, which shadows the
+# `property` builtin inside that class body — alias it here so it stays usable.
+_builtin_property = property
 
 
 class Amenity(models.Model):
@@ -114,6 +121,13 @@ class PropertyEmail(models.Model):
 
 
 class RoomCategory(models.Model):
+    DISCOUNT_TYPE_FLAT = 'flat'
+    DISCOUNT_TYPE_PERCENTAGE = 'percentage'
+    DISCOUNT_TYPE_CHOICES = [
+        (DISCOUNT_TYPE_FLAT, 'Flat Amount (₹)'),
+        (DISCOUNT_TYPE_PERCENTAGE, 'Percentage (%)'),
+    ]
+
     property = models.ForeignKey(Property, on_delete=models.CASCADE, related_name='room_categories')
     name = models.CharField(max_length=200)
     description = models.TextField()
@@ -122,6 +136,15 @@ class RoomCategory(models.Model):
     num_beds = models.PositiveIntegerField(default=1)
     bed_type = models.CharField(max_length=100, blank=True, help_text='e.g., King, Queen, Twin')
     area_sqft = models.PositiveIntegerField(null=True, blank=True)
+    offer_name = models.CharField(max_length=200, blank=True, help_text='e.g., Diwali Offer')
+    discount_type = models.CharField(
+        max_length=10, choices=DISCOUNT_TYPE_CHOICES, blank=True,
+        help_text='Leave blank for no discount',
+    )
+    discount_value = models.DecimalField(
+        max_digits=10, decimal_places=2, null=True, blank=True,
+        help_text='Flat amount in ₹, or a percentage from 0-100, depending on the discount type above',
+    )
     is_active = models.BooleanField(default=True)
     order = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -134,6 +157,31 @@ class RoomCategory(models.Model):
 
     def __str__(self):
         return f'{self.property.name} - {self.name}'
+
+    def clean(self):
+        super().clean()
+        if self.discount_type and self.discount_value is None:
+            raise ValidationError({'discount_value': 'Enter a discount value when a discount type is selected.'})
+        if self.discount_value is not None and self.discount_value < 0:
+            raise ValidationError({'discount_value': 'Discount value cannot be negative.'})
+        if self.discount_type == self.DISCOUNT_TYPE_PERCENTAGE and self.discount_value is not None and self.discount_value > 100:
+            raise ValidationError({'discount_value': 'Percentage discount cannot exceed 100.'})
+
+    @_builtin_property
+    def has_discount(self):
+        return bool(self.discount_type and self.discount_value and self.discount_value > 0)
+
+    @_builtin_property
+    def discounted_price_per_night(self):
+        if not self.has_discount:
+            return self.price_per_night
+        if self.discount_type == self.DISCOUNT_TYPE_FLAT:
+            discounted = self.price_per_night - self.discount_value
+        else:
+            pct = min(self.discount_value, Decimal(100))
+            discounted = self.price_per_night * (1 - (pct / Decimal(100)))
+        discounted = max(discounted, Decimal(0))
+        return discounted.quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)
 
 
 class City(models.Model):

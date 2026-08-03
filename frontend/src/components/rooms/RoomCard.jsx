@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {
   Card, CardContent, CardMedia, Box, Typography,
-  Button, Grid, IconButton, MobileStepper,
+  Button, Grid, IconButton, MobileStepper, Chip,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
 import PeopleIcon from '@mui/icons-material/People';
@@ -122,6 +122,25 @@ export default function RoomCard({ room }) {
           </>
         )}
 
+        {/* Offer badge */}
+        {room.has_discount && room.offer_name && (
+          <Chip
+            label={room.offer_name}
+            size="small"
+            sx={{
+              position: 'absolute',
+              top: 12,
+              left: 12,
+              backgroundColor: '#1a7a3c',
+              color: '#fff',
+              fontWeight: 700,
+              fontSize: '0.66rem',
+              letterSpacing: '0.05em',
+              boxShadow: '0 4px 12px rgba(26,122,60,0.4)',
+            }}
+          />
+        )}
+
         {/* Price badge */}
         <Box
           sx={{
@@ -136,10 +155,23 @@ export default function RoomCard({ room }) {
             boxShadow: '0 4px 12px rgba(255,107,53,0.4)',
           }}
         >
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.25 }}>
+          {room.has_discount && (
+            <Typography
+              sx={{
+                fontSize: '0.68rem',
+                textAlign: 'center',
+                opacity: 0.85,
+                textDecoration: 'line-through',
+                lineHeight: 1.2,
+              }}
+            >
+              ₹{Number(room.price_per_night).toLocaleString('en-IN')}
+            </Typography>
+          )}
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.25, justifyContent: 'center' }}>
             <CurrencyRupeeIcon sx={{ fontSize: 14 }} />
             <Typography sx={{ fontSize: '1rem', fontWeight: 700, lineHeight: 1 }}>
-              {Number(room.price_per_night).toLocaleString('en-IN')}
+              {Number(room.has_discount ? room.discounted_price_per_night : room.price_per_night).toLocaleString('en-IN')}
             </Typography>
           </Box>
           <Typography sx={{ fontSize: '0.6rem', textAlign: 'center', opacity: 0.9 }}>per night</Typography>

@@ -460,10 +460,17 @@ export default function BookingForm({ propertyId, preselectedRoomId }) {
                         {property.room_categories.filter((r) => r.is_active).map((room) => (
                           <MenuItem key={room.id} value={room.id}>
                             <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
-                              <span>{room.name}</span>
-                              <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.3, color: '#FF6B35' }}>
-                                <CurrencyRupeeIcon sx={{ fontSize: 14 }} />
-                                <span>{Number(room.price_per_night).toLocaleString('en-IN')}/night</span>
+                              <span>{room.name}{room.has_discount && room.offer_name ? ` (${room.offer_name})` : ''}</span>
+                              <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, color: '#FF6B35' }}>
+                                {room.has_discount && (
+                                  <span style={{ textDecoration: 'line-through', opacity: 0.6, fontSize: '0.85em' }}>
+                                    ₹{Number(room.price_per_night).toLocaleString('en-IN')}
+                                  </span>
+                                )}
+                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.3 }}>
+                                  <CurrencyRupeeIcon sx={{ fontSize: 14 }} />
+                                  <span>{Number(room.has_discount ? room.discounted_price_per_night : room.price_per_night).toLocaleString('en-IN')}/night</span>
+                                </Box>
                               </Box>
                             </Box>
                           </MenuItem>
@@ -513,7 +520,7 @@ export default function BookingForm({ propertyId, preselectedRoomId }) {
                         />
                         {selectedRoom && (
                           <Chip
-                            label={`Est. ₹${(Number(selectedRoom.price_per_night) * nights * form.number_of_rooms).toLocaleString('en-IN')}`}
+                            label={`Est. ₹${(Number(selectedRoom.has_discount ? selectedRoom.discounted_price_per_night : selectedRoom.price_per_night) * nights * form.number_of_rooms).toLocaleString('en-IN')}`}
                             variant="outlined"
                             color="primary"
                             size="small"
@@ -729,12 +736,26 @@ export default function BookingForm({ propertyId, preselectedRoomId }) {
                           alignItems: 'center',
                         }}
                       >
-                        <Typography variant="body2">Estimated Total ({nights} nights × {form.number_of_rooms} room{form.number_of_rooms > 1 ? 's' : ''})</Typography>
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                          <CurrencyRupeeIcon />
-                          <Typography variant="h5" sx={{ fontWeight: 700 }}>
-                            {(Number(selectedRoom.price_per_night) * nights * form.number_of_rooms).toLocaleString('en-IN')}
-                          </Typography>
+                        <Box>
+                          <Typography variant="body2">Estimated Total ({nights} nights × {form.number_of_rooms} room{form.number_of_rooms > 1 ? 's' : ''})</Typography>
+                          {selectedRoom.has_discount && selectedRoom.offer_name && (
+                            <Typography variant="caption" sx={{ opacity: 0.9, fontWeight: 600 }}>
+                              {selectedRoom.offer_name} applied
+                            </Typography>
+                          )}
+                        </Box>
+                        <Box sx={{ textAlign: 'right' }}>
+                          {selectedRoom.has_discount && (
+                            <Typography sx={{ fontSize: '0.85rem', textDecoration: 'line-through', opacity: 0.75 }}>
+                              ₹{(Number(selectedRoom.price_per_night) * nights * form.number_of_rooms).toLocaleString('en-IN')}
+                            </Typography>
+                          )}
+                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                            <CurrencyRupeeIcon />
+                            <Typography variant="h5" sx={{ fontWeight: 700 }}>
+                              {(Number(selectedRoom.has_discount ? selectedRoom.discounted_price_per_night : selectedRoom.price_per_night) * nights * form.number_of_rooms).toLocaleString('en-IN')}
+                            </Typography>
+                          </Box>
                         </Box>
                       </Box>
                     </Grid>

@@ -56,12 +56,16 @@ class RoomPhotoSerializer(serializers.ModelSerializer):
 class RoomCategorySerializer(serializers.ModelSerializer):
     photos = RoomPhotoSerializer(many=True, read_only=True)
     property_id = serializers.IntegerField(source='property.id', read_only=True)
+    has_discount = serializers.ReadOnlyField()
+    discounted_price_per_night = serializers.ReadOnlyField()
 
     class Meta:
         model = RoomCategory
         fields = [
             'id', 'property_id', 'name', 'description', 'price_per_night',
             'max_occupancy', 'num_beds', 'bed_type', 'area_sqft',
+            'offer_name', 'discount_type', 'discount_value',
+            'has_discount', 'discounted_price_per_night',
             'is_active', 'order', 'photos',
         ]
 
@@ -114,7 +118,7 @@ class PropertyListSerializer(serializers.ModelSerializer):
         return None
 
     def get_starting_price(self, obj):
-        prices = [r.price_per_night for r in obj.room_categories.all() if r.is_active]
+        prices = [r.discounted_price_per_night for r in obj.room_categories.all() if r.is_active]
         return min(prices) if prices else None
 
     def get_room_count(self, obj):
