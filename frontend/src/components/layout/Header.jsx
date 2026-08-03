@@ -52,11 +52,23 @@ export default function Header({ property }) {
       >
         <Container maxWidth="lg">
           <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
-            {property?.primary_phone && (
+            {property?.phones?.length > 0 && (
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                 <PhoneIcon sx={{ fontSize: 14, color: 'rgba(255,255,255,0.85)' }} />
                 <Typography variant="caption" sx={{ color: 'rgba(255,255,255,0.9)' }}>
-                  {property.primary_phone}
+                  {property.phones.map((p, i) => (
+                    <React.Fragment key={p.id}>
+                      <Typography
+                        component="a"
+                        href={`tel:${p.phone}`}
+                        variant="caption"
+                        sx={{ color: 'inherit', textDecoration: 'none', '&:hover': { color: '#FFD700' } }}
+                      >
+                        {p.phone}
+                      </Typography>
+                      {i < property.phones.length - 1 && ', '}
+                    </React.Fragment>
+                  ))}
                 </Typography>
               </Box>
             )}

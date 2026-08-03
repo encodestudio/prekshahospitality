@@ -91,13 +91,12 @@ export default function ContactPage() {
               <Stack spacing={3}>
                 {[
                   { icon: <LocationOnIcon sx={{ color: '#FF6B35', fontSize: 28 }} />, label: 'Address', value: property?.address },
-                  ...(property?.phones || []).map((p) => ({
+                  ...(property?.phones?.length ? [{
                     icon: <PhoneIcon sx={{ color: '#FF6B35', fontSize: 28 }} />,
-                    label: p.label ? `Phone — ${p.label}` : 'Phone',
-                    value: p.phone,
-                    href: `tel:${p.phone}`,
-                    key: `phone-${p.id}`,
-                  })),
+                    label: 'Phone',
+                    key: 'phone',
+                    phones: property.phones,
+                  }] : []),
                   ...(property?.emails || []).map((e) => ({
                     icon: <EmailIcon sx={{ color: '#FF6B35', fontSize: 28 }} />,
                     label: e.label ? `Email — ${e.label}` : 'Email',
@@ -106,7 +105,7 @@ export default function ContactPage() {
                     key: `email-${e.id}`,
                   })),
                   { icon: <WhatsAppIcon sx={{ color: '#25D366', fontSize: 28 }} />, label: 'WhatsApp', value: property?.whatsapp_number, href: `https://wa.me/${property?.whatsapp_number}` },
-                ].filter((item) => item.value).map((item) => (
+                ].filter((item) => item.value || item.phones).map((item) => (
                   <Paper
                     key={item.key || item.label}
                     elevation={0}
@@ -117,7 +116,22 @@ export default function ContactPage() {
                       <Typography variant="overline" sx={{ color: '#FF6B35', letterSpacing: '0.15em' }}>
                         {item.label}
                       </Typography>
-                      {item.href ? (
+                      {item.phones ? (
+                        <Typography component="div">
+                          {item.phones.map((p, i) => (
+                            <React.Fragment key={p.id}>
+                              <Typography
+                                component="a"
+                                href={`tel:${p.phone}`}
+                                sx={{ color: '#2C1810', textDecoration: 'none', fontWeight: 500, '&:hover': { color: '#FF6B35' } }}
+                              >
+                                {p.phone}
+                              </Typography>
+                              {i < item.phones.length - 1 && ', '}
+                            </React.Fragment>
+                          ))}
+                        </Typography>
+                      ) : item.href ? (
                         <Typography
                           component="a"
                           href={item.href}

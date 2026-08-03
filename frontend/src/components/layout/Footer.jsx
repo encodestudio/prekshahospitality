@@ -160,17 +160,24 @@ export default function Footer({ property }) {
                   </Typography>
                 </Box>
               )}
-              {(property?.phones || []).map((p) => (
-                <Box key={`phone-${p.id}`} sx={{ display: 'flex', gap: 1.5, alignItems: 'center' }}>
+              {property?.phones?.length > 0 && (
+                <Box sx={{ display: 'flex', gap: 1.5, alignItems: 'center' }}>
                   <PhoneIcon sx={{ color: '#FF6B35', fontSize: 18 }} />
-                  <MuiLink
-                    href={`tel:${p.phone}`}
-                    sx={{ color: '#6B4226', textDecoration: 'none', '&:hover': { color: '#FF6B35' } }}
-                  >
-                    {p.phone}{p.label ? ` (${p.label})` : ''}
-                  </MuiLink>
+                  <Typography variant="body2" sx={{ color: '#6B4226' }}>
+                    {property.phones.map((p, i) => (
+                      <React.Fragment key={p.id}>
+                        <MuiLink
+                          href={`tel:${p.phone}`}
+                          sx={{ color: '#6B4226', textDecoration: 'none', '&:hover': { color: '#FF6B35' } }}
+                        >
+                          {p.phone}{p.label ? ` (${p.label})` : ''}
+                        </MuiLink>
+                        {i < property.phones.length - 1 && ', '}
+                      </React.Fragment>
+                    ))}
+                  </Typography>
                 </Box>
-              ))}
+              )}
               {property?.whatsapp_number && (
                 <Box sx={{ display: 'flex', gap: 1.5, alignItems: 'center' }}>
                   <WhatsAppIcon sx={{ color: '#25D366', fontSize: 18 }} />
