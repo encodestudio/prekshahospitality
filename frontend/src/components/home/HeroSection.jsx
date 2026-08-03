@@ -563,7 +563,7 @@ export default function HeroSection({ property }) {
             pb: 1,
           }}
         >
-          {success ? '🕉️  Booking Submitted!' : 'Complete Your Booking'}
+          {success ? 'Booking Submitted!' : 'Complete Your Booking'}
           <IconButton onClick={handleDialogClose} disabled={submitting} sx={{ color: '#4A2C1A' }}>
             <CloseIcon />
           </IconButton>

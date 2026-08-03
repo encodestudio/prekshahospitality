@@ -28,7 +28,7 @@ export default function BookingPage() {
               mb: 1.5,
             }}
           >
-            🕉️ &nbsp; Begin Your Sacred Journey &nbsp; 🕉️
+            Begin Your Sacred Journey
           </Typography>
           <Typography variant="h2" sx={{ color: '#FFD700', fontFamily: '"Cinzel", serif' }}>
             Booking Request

@@ -8,14 +8,13 @@ import PropertyInfo from '../components/home/PropertyInfo';
 import AmenitiesSection from '../components/home/AmenitiesSection';
 import RoomsSection from '../components/home/RoomsSection';
 import BookingBanner from '../components/home/BookingBanner';
-import LoadingScreen from '../components/common/LoadingScreen';
 import { useProperty } from '../hooks/useProperty';
 
 export default function PropertyDetailPage() {
   const { id } = useParams();
   const { property, loading, error } = useProperty(id);
 
-  if (loading) return <LoadingScreen message="Loading property details..." />;
+  if (loading) return null;
 
   if (error || !property) {
     return (

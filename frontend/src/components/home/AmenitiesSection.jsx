@@ -14,7 +14,7 @@ const AMENITY_EMOJI_MAP = {
   'gym': '🏋️',
   'parking': '🅿️',
   'yoga': '🧘',
-  'meditation': '🕉️',
+  'meditation': '🪷',
   'air conditioning': '❄️',
   'room service': '🛎️',
   'laundry': '👔',

@@ -3,7 +3,6 @@ import { Box, Container, Grid, Typography } from '@mui/material';
 import Layout from '../components/layout/Layout';
 import RoomCard from '../components/rooms/RoomCard';
 import BookingBanner from '../components/home/BookingBanner';
-import LoadingScreen from '../components/common/LoadingScreen';
 import { useProperty } from '../hooks/useProperty';
 
 const DEFAULT_PROPERTY_ID = process.env.REACT_APP_PROPERTY_ID || 1;
@@ -11,7 +10,7 @@ const DEFAULT_PROPERTY_ID = process.env.REACT_APP_PROPERTY_ID || 1;
 export default function RoomsPage() {
   const { property, loading } = useProperty(DEFAULT_PROPERTY_ID);
 
-  if (loading) return <LoadingScreen message="Loading rooms..." />;
+  if (loading) return null;
 
   const rooms = property?.room_categories?.filter((r) => r.is_active) || [];
 
@@ -46,7 +45,7 @@ export default function RoomsPage() {
               mb: 1.5,
             }}
           >
-            🕉️ &nbsp; Our Accommodations &nbsp; 🕉️
+            Our Accommodations
           </Typography>
           <Typography
             variant="h2"

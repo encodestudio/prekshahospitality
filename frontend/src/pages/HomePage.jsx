@@ -5,7 +5,6 @@ import PropertyInfo from '../components/home/PropertyInfo';
 import AmenitiesSection from '../components/home/AmenitiesSection';
 import RoomsSection from '../components/home/RoomsSection';
 import BookingBanner from '../components/home/BookingBanner';
-import LoadingScreen from '../components/common/LoadingScreen';
 import { useProperty } from '../hooks/useProperty';
 
 const DEFAULT_PROPERTY_ID = process.env.REACT_APP_PROPERTY_ID || 1;
@@ -13,7 +12,7 @@ const DEFAULT_PROPERTY_ID = process.env.REACT_APP_PROPERTY_ID || 1;
 export default function HomePage() {
   const { property, loading } = useProperty(DEFAULT_PROPERTY_ID);
 
-  if (loading) return <LoadingScreen message="Loading property details..." />;
+  if (loading) return null;
 
   return (
     <Layout property={property}>

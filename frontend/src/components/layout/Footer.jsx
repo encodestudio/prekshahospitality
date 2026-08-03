@@ -206,7 +206,7 @@ export default function Footer({ property }) {
             © {currentYear} Preksha Hospitality. All rights reserved.
           </Typography>
           <Typography variant="caption" sx={{ color: '#8A6952', textAlign: 'center' }}>
-            🕉️ &nbsp; सर्वे भवन्तु सुखिनः &nbsp; 🕉️
+            सर्वे भवन्तु सुखिनः
           </Typography>
         </Box>
       </Container>

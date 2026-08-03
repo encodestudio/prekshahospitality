@@ -13,17 +13,6 @@ export default function BookingBanner({ property }) {
         background: 'linear-gradient(135deg, #FF6B35 0%, #FF8C42 40%, #FFD700 100%)',
         position: 'relative',
         overflow: 'hidden',
-        '&::before': {
-          content: '"🕉️"',
-          position: 'absolute',
-          fontSize: '20rem',
-          opacity: 0.06,
-          right: '-4rem',
-          top: '50%',
-          transform: 'translateY(-50%)',
-          lineHeight: 1,
-          pointerEvents: 'none',
-        },
       }}
     >
       <Container maxWidth="lg">

@@ -11,7 +11,7 @@ export default function PropertyInfo({ property }) {
   const stats = [
     { icon: '🏨', value: property.room_categories?.length || '10+', label: 'Room Types' },
     { icon: '🌿', value: property.property_amenities?.length || '20+', label: 'Amenities' },
-    { icon: '🕉️', value: '5★', label: 'Divine Experience' },
+    { icon: '🙏', value: '5★', label: 'Divine Experience' },
     { icon: '📍', value: property.city_name, label: 'Location' },
   ];
 
@@ -93,15 +93,6 @@ export default function PropertyInfo({ property }) {
                   mb: 4,
                   boxShadow: '0 20px 60px rgba(44,24,16,0.2)',
                   position: 'relative',
-                  '&::before': {
-                    content: '"🕉️"',
-                    position: 'absolute',
-                    top: 16,
-                    right: 16,
-                    fontSize: '2rem',
-                    zIndex: 2,
-                    filter: 'drop-shadow(0 0 8px rgba(255,215,0,0.8))',
-                  },
                 }}
               >
                 <Box

@@ -6,7 +6,6 @@ import {
 import Layout from '../components/layout/Layout';
 import BookingBanner from '../components/home/BookingBanner';
 import SectionHeading from '../components/common/SectionHeading';
-import LoadingScreen from '../components/common/LoadingScreen';
 import { useProperty } from '../hooks/useProperty';
 import { propertiesApi } from '../services/api';
 
@@ -15,7 +14,7 @@ const DEFAULT_PROPERTY_ID = process.env.REACT_APP_PROPERTY_ID || 1;
 const EMOJI_MAP = {
   'swimming pool': '🏊', 'pool': '🏊', 'spa': '💆', 'wifi': '📶',
   'restaurant': '🍽️', 'gym': '🏋️', 'parking': '🅿️', 'yoga': '🧘',
-  'meditation': '🕉️', 'air conditioning': '❄️', 'room service': '🛎️',
+  'meditation': '🪷', 'air conditioning': '❄️', 'room service': '🛎️',
   'laundry': '👔', 'garden': '🌿', 'terrace': '🌅', 'bar': '🍹',
   'conference': '💼', 'library': '📚', 'bonfire': '🔥',
   'trekking': '🥾', 'ayurveda': '🌿',
@@ -66,7 +65,7 @@ export default function AmenitiesPage() {
       .finally(() => setAmenitiesLoading(false));
   }, []);
 
-  if (propertyLoading || amenitiesLoading) return <LoadingScreen message="Loading amenities..." />;
+  if (propertyLoading || amenitiesLoading) return null;
 
   return (
     <Layout property={property}>
@@ -88,7 +87,7 @@ export default function AmenitiesPage() {
               mb: 1.5,
             }}
           >
-            🕉️ &nbsp; Facilities & Services &nbsp; 🕉️
+            Facilities & Services
           </Typography>
           <Typography variant="h2" sx={{ color: '#FFD700', fontFamily: '"Cinzel", serif', mb: 2 }}>
             Amenities

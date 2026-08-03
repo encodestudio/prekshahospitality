@@ -99,7 +99,7 @@ function LeadDetailDialog({ lead, open, onClose, onStatusUpdate, onNoteAdd }) {
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Box>
             <Typography variant="h6" sx={{ fontFamily: '"Cinzel", serif' }}>
-              🕉️ Lead Details
+              Lead Details
             </Typography>
             <Typography variant="caption" sx={{ color: '#FFD9C0' }}>
               {lead.booking_reference}
@@ -336,7 +336,7 @@ export default function LeadsDashboard() {
               variant="h4"
               sx={{ fontFamily: '"Cinzel", serif', color: '#FFD700', letterSpacing: '0.05em' }}
             >
-              🕉️ Lead Management
+              Lead Management
             </Typography>
             <Typography variant="body2" sx={{ color: '#FFD9C0', mt: 0.5 }}>
               Preksha Hospitality — Booking Requests

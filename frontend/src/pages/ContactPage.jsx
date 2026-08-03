@@ -12,7 +12,6 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import Layout from '../components/layout/Layout';
 import BookingBanner from '../components/home/BookingBanner';
 import SectionHeading from '../components/common/SectionHeading';
-import LoadingScreen from '../components/common/LoadingScreen';
 import { useProperty } from '../hooks/useProperty';
 import { contactApi } from '../services/api';
 
@@ -28,7 +27,7 @@ export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState('');
 
-  if (loading) return <LoadingScreen message="Loading contact details..." />;
+  if (loading) return null;
 
   const handleChange = (field) => (e) => {
     setForm((f) => ({ ...f, [field]: e.target.value }));
@@ -75,7 +74,7 @@ export default function ContactPage() {
       <Box sx={{ background: 'linear-gradient(135deg, #2C1810, #4A2C1A)', py: { xs: 8, md: 10 }, textAlign: 'center' }}>
         <Container>
           <Typography sx={{ color: '#FF6B35', fontSize: '0.75rem', letterSpacing: '0.4em', textTransform: 'uppercase', mb: 1.5 }}>
-            🕉️ &nbsp; Reach Us &nbsp; 🕉️
+            Reach Us
           </Typography>
           <Typography variant="h2" sx={{ color: '#FFD700', fontFamily: '"Cinzel", serif' }}>
             Contact Us

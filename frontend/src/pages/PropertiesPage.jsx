@@ -3,7 +3,6 @@ import { Box, Container, Grid, Typography, Divider } from '@mui/material';
 import LocationCityIcon from '@mui/icons-material/LocationCity';
 import Layout from '../components/layout/Layout';
 import PropertyCard from '../components/properties/PropertyCard';
-import LoadingScreen from '../components/common/LoadingScreen';
 import { useProperties } from '../hooks/useProperty';
 
 export default function PropertiesPage() {
@@ -19,7 +18,7 @@ export default function PropertiesPage() {
     return groups;
   }, [properties]);
 
-  if (loading) return <LoadingScreen message="Loading properties..." />;
+  if (loading) return null;
 
   const cities = Object.keys(cityGroups).sort();
 
@@ -33,17 +32,6 @@ export default function PropertiesPage() {
           textAlign: 'center',
           position: 'relative',
           overflow: 'hidden',
-          '&::before': {
-            content: '"🕉️"',
-            position: 'absolute',
-            fontSize: '22rem',
-            opacity: 0.03,
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            pointerEvents: 'none',
-            userSelect: 'none',
-          },
         }}
       >
         <Container maxWidth="md">

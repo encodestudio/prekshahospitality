@@ -3,13 +3,12 @@ import { Box, Container, Grid, Typography, Divider } from '@mui/material';
 import Layout from '../components/layout/Layout';
 import BookingBanner from '../components/home/BookingBanner';
 import SectionHeading from '../components/common/SectionHeading';
-import LoadingScreen from '../components/common/LoadingScreen';
 import { useProperty } from '../hooks/useProperty';
 
 const DEFAULT_PROPERTY_ID = process.env.REACT_APP_PROPERTY_ID || 1;
 
 const VALUES = [
-  { icon: '🕉️', title: 'Integrity', body: 'We operate with transparency and honesty in every interaction with our guests, partners, and stakeholders.' },
+  { icon: '⚖️', title: 'Integrity', body: 'We operate with transparency and honesty in every interaction with our guests, partners, and stakeholders.' },
   { icon: '✨', title: 'Quality', body: 'From clean rooms to attentive service, we hold ourselves to high standards so every stay is consistently excellent.' },
   { icon: '🙏', title: 'Service Excellence', body: 'Warm Indian hospitality is at the heart of everything we do — every guest is treated with care and respect.' },
   { icon: '🌿', title: 'Community', body: 'We contribute to local tourism growth and employment generation, creating value beyond our properties.' },
@@ -18,7 +17,7 @@ const VALUES = [
 export default function AboutPage() {
   const { property, loading } = useProperty(DEFAULT_PROPERTY_ID);
 
-  if (loading) return <LoadingScreen message="Loading..." />;
+  if (loading) return null;
 
   return (
     <Layout property={property}>
@@ -34,7 +33,7 @@ export default function AboutPage() {
           <Typography
             sx={{ color: '#FF6B35', fontSize: '0.75rem', letterSpacing: '0.4em', textTransform: 'uppercase', mb: 1.5 }}
           >
-            🕉️ &nbsp; Our Story &nbsp; 🕉️
+            Our Story
           </Typography>
           <Typography variant="h2" sx={{ color: '#FFD700', fontFamily: '"Cinzel", serif' }}>
             About Us
