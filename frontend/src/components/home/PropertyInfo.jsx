@@ -40,10 +40,12 @@ export default function PropertyInfo({ property }) {
                   {property.address}
                 </Typography>
               </Box>
-              {property.primary_phone && (
+              {property.phones?.length > 0 && (
                 <Box sx={{ display: 'flex', gap: 1.5, alignItems: 'center' }}>
                   <PhoneIcon sx={{ color: '#FF6B35', flexShrink: 0 }} />
-                  <Typography variant="body2" sx={{ color: '#6B4226' }}>{property.primary_phone}</Typography>
+                  <Typography variant="body2" sx={{ color: '#6B4226' }}>
+                    {property.phones.map((p) => p.phone).join(', ')}
+                  </Typography>
                 </Box>
               )}
               {property.primary_email && (
