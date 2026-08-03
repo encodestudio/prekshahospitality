@@ -211,7 +211,7 @@ export default function Footer({ property }) {
             © {currentYear} Preksha Hospitality. All rights reserved.
           </Typography>
           <Typography variant="caption" sx={{ color: '#8A6952', textAlign: 'center' }}>
-            सर्वे भवन्तु सुखिनः
+            श्री रामाय नमः
           </Typography>
         </Box>
       </Container>
