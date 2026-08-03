@@ -81,13 +81,14 @@ export default function BookingBanner({ property }) {
                     href={`https://wa.me/${property.whatsapp_number}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    variant="outlined"
+                    variant="contained"
                     startIcon={<WhatsAppIcon />}
                     fullWidth
                     sx={{
-                      borderColor: '#25D366',
-                      color: '#25D366',
-                      '&:hover': { borderColor: '#25D366', backgroundColor: 'rgba(37,211,102,0.08)' },
+                      backgroundColor: '#25D366',
+                      color: '#fff',
+                      boxShadow: '0 4px 14px rgba(18,89,52,0.35)',
+                      '&:hover': { backgroundColor: '#1EBE5A' },
                     }}
                   >
                     WhatsApp
