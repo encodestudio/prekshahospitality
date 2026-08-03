@@ -10,7 +10,6 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
-import YouTubeIcon from '@mui/icons-material/YouTube';
 
 export default function Footer({ property }) {
   const currentYear = new Date().getFullYear();
@@ -45,9 +44,8 @@ export default function Footer({ property }) {
             </Typography>
             <Stack direction="row" spacing={1}>
               {[
-                { icon: <FacebookIcon />, label: 'Facebook' },
-                { icon: <InstagramIcon />, label: 'Instagram' },
-                { icon: <YouTubeIcon />, label: 'YouTube' },
+                { icon: <FacebookIcon />, label: 'Facebook', href: 'https://www.facebook.com/prekshahospitality/' },
+                { icon: <InstagramIcon />, label: 'Instagram', href: 'https://www.instagram.com/preksha.hospitality/' },
                 { icon: <WhatsAppIcon />, label: 'WhatsApp', href: property?.whatsapp_number ? `https://wa.me/${property.whatsapp_number}` : '#' },
               ].map((social) => (
                 <IconButton
