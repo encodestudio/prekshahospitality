@@ -153,6 +153,9 @@
         {% if property.primary_email %} &nbsp;|&nbsp; ✉️ <a href="mailto:{{ property.primary_email }}">{{ property.primary_email }}</a>{% endif %}
       </div>
       {% endif %}
+
+      {% include 'emails/_booking_policy.html' %}
+      {% include 'emails/_cancellation_policy.html' %}
     </div>
 
     <!-- Footer -->

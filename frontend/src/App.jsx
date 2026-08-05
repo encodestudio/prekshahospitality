@@ -10,6 +10,7 @@ import PropertyDetailPage from './pages/PropertyDetailPage';
 import RoomsPage from './pages/RoomsPage';
 import AmenitiesPage from './pages/AmenitiesPage';
 import BookingPage from './pages/BookingPage';
+import BookingPolicyPage from './pages/BookingPolicyPage';
 import ContactPage from './pages/ContactPage';
 import AboutPage from './pages/AboutPage';
 import LoginPage from './pages/manage/LoginPage';
@@ -34,6 +35,7 @@ export default function App() {
               <Route path="/rooms" element={<RoomsPage />} />
               <Route path="/amenities" element={<AmenitiesPage />} />
               <Route path="/booking" element={<BookingPage />} />
+              <Route path="/booking-policy" element={<BookingPolicyPage />} />
               <Route path="/contact" element={<ContactPage />} />
               <Route path="/about" element={<AboutPage />} />
               <Route path="/gallery" element={<RoomsPage />} />

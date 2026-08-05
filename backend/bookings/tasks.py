@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.core.mail import send_mail
+from django.core.mail import EmailMultiAlternatives, send_mail
 from django.template.loader import render_to_string
 import logging
 
@@ -85,14 +85,24 @@ def send_booking_status_update(booking_id):
     recipients = [booking.email]
     if settings.BOOKINGS_TEAM_EMAIL:
         recipients.append(settings.BOOKINGS_TEAM_EMAIL)
-    send_mail(
+
+    email = EmailMultiAlternatives(
         subject=subject,
-        message=plain_message,
+        body=plain_message,
         from_email=settings.DEFAULT_FROM_EMAIL,
-        recipient_list=recipients,
-        html_message=html_message,
-        fail_silently=False,
+        to=recipients,
     )
+    email.attach_alternative(html_message, 'text/html')
+
+    if booking.status == BookingRequest.STATUS_CONFIRMED:
+        try:
+            from .pdf import generate_booking_ticket_pdf
+            ticket_pdf = generate_booking_ticket_pdf(booking)
+            email.attach(f'Preksha-Ticket-{booking.booking_reference}.pdf', ticket_pdf, 'application/pdf')
+        except Exception as exc:
+            logger.error('Booking ticket PDF generation failed for %s: %s', booking.booking_reference, exc)
+
+    email.send(fail_silently=False)
     logger.info('Booking status update email sent to %s for %s → %s', recipients, booking.booking_reference, booking.status)
 
 
@@ -153,3 +163,46 @@ def send_booking_status_whatsapp(booking_id):
         smsgid=booking.booking_reference,
     )
     logger.info('Booking status WhatsApp sent for %s → %s', booking.booking_reference, booking.status)
+
+    if booking.status == BookingRequest.STATUS_CONFIRMED:
+        try:
+            send_booking_ticket_whatsapp(booking.id)
+        except Exception as exc:
+            logger.error(
+                'Booking ticket WhatsApp document failed for %s (requires the "%s" Document-header '
+                'template to exist and be approved on the ICS WABA dashboard): %s',
+                booking.booking_reference, settings.ICS_WHATSAPP_TICKET_TEMPLATE, exc,
+            )
+
+
+def send_booking_ticket_whatsapp(booking_id):
+    """
+    Send the boarding-pass style booking ticket PDF as a WhatsApp document.
+
+    Requires a Document-header WhatsApp template (name configured via
+    ICS_WHATSAPP_TICKET_TEMPLATE, default "booking_ticket") to already exist and be
+    approved in the ICS/WhatsApp Business template gallery — that approval happens
+    outside this codebase, via the ICS dashboard. Until it exists, this will fail
+    (callers should treat it as best-effort, same as the rest of the WhatsApp sends).
+    """
+    from .models import BookingRequest
+    from .whatsapp_client import send_whatsapp_template
+
+    booking = BookingRequest.objects.select_related('venue').get(id=booking_id)
+    venue_name = booking.venue.name if booking.venue else ''
+    ticket_url = f'{settings.BACKEND_URL}/api/bookings/ticket/{booking.booking_reference}/'
+
+    send_whatsapp_template(
+        to=booking.mobile_number,
+        template_name=settings.ICS_WHATSAPP_TICKET_TEMPLATE,
+        placeholders=[
+            booking.guest_name,
+            venue_name,
+            booking.booking_reference,
+            booking.check_in_date.strftime('%d %b %Y'),
+            booking.check_out_date.strftime('%d %b %Y'),
+        ],
+        smsgid=booking.booking_reference,
+        media_url=ticket_url,
+    )
+    logger.info('Booking ticket WhatsApp document sent for %s (%s)', booking.booking_reference, ticket_url)

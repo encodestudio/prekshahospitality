@@ -15,4 +15,8 @@ Guests: {{ booking.total_guests }} Total ({{ booking.number_of_adults }} Adults{
 Our team will confirm your booking within 2-4 hours.
 {% if property.primary_phone %}For queries: {{ property.primary_phone }}{% endif %}
 
+{% include 'emails/_booking_policy.txt' %}
+
+{% include 'emails/_cancellation_policy.txt' %}
+
 🕉️ Preksha Hospitality — Where Every Stay is Divine

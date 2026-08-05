@@ -1,10 +1,12 @@
 import logging
+from django.http import HttpResponse
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from .models import BookingRequest
 from .serializers import BookingRequestCreateSerializer, BookingRequestDetailSerializer
+from .pdf import generate_booking_ticket_pdf, generate_policy_pdf
 
 logger = logging.getLogger(__name__)
 
@@ -63,6 +65,35 @@ class BookingStatusView(APIView):
                 {'error': 'Booking not found.'},
                 status=status.HTTP_404_NOT_FOUND,
             )
+
+
+class PolicyPDFView(APIView):
+    """Public download of the General Booking Policy + Cancellation & Refund Policy as a PDF."""
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        pdf_bytes = generate_policy_pdf()
+        response = HttpResponse(pdf_bytes, content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename="Preksha-Hospitality-Booking-Policy.pdf"'
+        return response
+
+
+class BookingTicketPDFView(APIView):
+    """Public download of a booking's boarding-pass style confirmation ticket, keyed by reference."""
+    permission_classes = [AllowAny]
+
+    def get(self, request, reference):
+        try:
+            booking = BookingRequest.objects.select_related('venue', 'room_category').get(
+                booking_reference=reference
+            )
+        except BookingRequest.DoesNotExist:
+            return Response({'error': 'Booking not found.'}, status=status.HTTP_404_NOT_FOUND)
+
+        pdf_bytes = generate_booking_ticket_pdf(booking)
+        response = HttpResponse(pdf_bytes, content_type='application/pdf')
+        response['Content-Disposition'] = f'attachment; filename="Preksha-Ticket-{booking.booking_reference}.pdf"'
+        return response
 
 
 class WhatsAppDeliveryCallbackView(APIView):

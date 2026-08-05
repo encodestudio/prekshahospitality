@@ -9,6 +9,7 @@ import PropertyGallery from '../components/home/PropertyGallery';
 import AmenitiesSection from '../components/home/AmenitiesSection';
 import PropertyLocation from '../components/home/PropertyLocation';
 import RoomsSection from '../components/home/RoomsSection';
+import BookingPolicy from '../components/home/BookingPolicy';
 import BookingBanner from '../components/home/BookingBanner';
 import { useProperty } from '../hooks/useProperty';
 
@@ -100,6 +101,7 @@ export default function PropertyDetailPage() {
       <AmenitiesSection property={property} />
       <PropertyLocation property={property} />
       <RoomsSection property={property} />
+      <BookingPolicy property={property} />
       <BookingBanner property={property} />
     </Layout>
   );

@@ -30,6 +30,11 @@
       </div>
       {% if booking.admin_notes %}<p><strong>Note from our team:</strong> {{ booking.admin_notes }}</p>{% endif %}
       {% if property.primary_phone %}<p>For queries: <strong>{{ property.primary_phone }}</strong></p>{% endif %}
+
+      {% if booking.status == 'confirmed' %}
+        {% include 'emails/_booking_policy.html' %}
+        {% include 'emails/_cancellation_policy.html' %}
+      {% endif %}
     </div>
     <div class="footer">🕉️ <strong>Preksha Hospitality</strong> — Where Every Stay is Divine</div>
   </div>

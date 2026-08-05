@@ -21,7 +21,7 @@ def _normalize_mobile(number: str) -> str:
     return digits
 
 
-def send_whatsapp_template(to, template_name, placeholders=None, smsgid=None):
+def send_whatsapp_template(to, template_name, placeholders=None, smsgid=None, media_url=None):
     """
     Send a pre-approved WhatsApp template message via the ICS WABA API.
 
@@ -31,6 +31,9 @@ def send_whatsapp_template(to, template_name, placeholders=None, smsgid=None):
     `to` accepts any common Indian mobile format — the country code (91) is
     added automatically after normalisation.
     `placeholders` is an ordered list of values for the template's {{1}}, {{2}}... variables.
+    `media_url` is only meaningful for a template whose approved HEADER type is
+    Document/Image/Video — it's the publicly reachable URL ICS/WhatsApp fetches
+    the attachment from. Ignored (sent as '') for plain text templates.
     """
     if not settings.ICS_WHATSAPP_USER or not settings.ICS_WHATSAPP_PASS:
         raise WhatsAppSendError('ICS WhatsApp credentials are not configured')
@@ -51,7 +54,7 @@ def send_whatsapp_template(to, template_name, placeholders=None, smsgid=None):
                 'from': settings.ICS_WHATSAPP_FROM,
                 'to': f'91{normalized}',
                 'templateid': template_name,
-                'url': '',
+                'url': media_url or '',
                 'smsgid': smsgid or '',
                 'placeholders': [
                     {str(i): value for i, value in enumerate(placeholders or [])}

@@ -194,3 +194,12 @@ ICS_WHATSAPP_USER = config('ICS_WHATSAPP_USER', default='')
 ICS_WHATSAPP_PASS = config('ICS_WHATSAPP_PASS', default='')
 ICS_WHATSAPP_FROM = config('ICS_WHATSAPP_FROM', default='')  # registered WABA number, e.g. 9180xxxxxxx (no +)
 
+# Name of the (separately approved, Document-header) WhatsApp template used to deliver
+# the boarding-pass style booking ticket PDF. Must exist in the ICS/WhatsApp Business
+# template gallery before this will send successfully — see bookings/tasks.py.
+ICS_WHATSAPP_TICKET_TEMPLATE = config('ICS_WHATSAPP_TICKET_TEMPLATE', default='booking_ticket')
+
+# Public base URL of this backend — used to build the booking-ticket PDF link handed
+# to WhatsApp for the document template above (WhatsApp fetches the file from this URL).
+BACKEND_URL = config('BACKEND_URL', default='http://localhost:8000')
+

@@ -10,4 +10,10 @@ Check-out: {{ booking.check_out_date|date:"d M Y" }}
 {% if booking.admin_notes %}Note: {{ booking.admin_notes }}{% endif %}
 {% if property.primary_phone %}For queries: {{ property.primary_phone }}{% endif %}
 
+{% if booking.status == 'confirmed' %}
+{% include 'emails/_booking_policy.txt' %}
+
+{% include 'emails/_cancellation_policy.txt' %}
+{% endif %}
+
 🕉️ Preksha Hospitality — Where Every Stay is Divine

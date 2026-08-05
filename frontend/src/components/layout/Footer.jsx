@@ -117,15 +117,16 @@ export default function Footer({ property }) {
               Policies
             </Typography>
             {[
-              'Booking Policy',
-              'Cancellation Policy',
-              'Check-in / Check-out',
-              'Privacy Policy',
-              'Terms of Service',
+              { label: 'Booking Policy', to: '/booking-policy' },
+              { label: 'Cancellation Policy', to: '/booking-policy#cancellation-policy' },
+              { label: 'Check-in / Check-out', to: '/booking-policy' },
+              { label: 'Privacy Policy', to: '#' },
+              { label: 'Terms of Service', to: '#' },
             ].map((item) => (
               <MuiLink
-                key={item}
-                href="#"
+                key={item.label}
+                component={item.to.startsWith('/') ? Link : 'a'}
+                {...(item.to.startsWith('/') ? { to: item.to } : { href: item.to })}
                 sx={{
                   display: 'block',
                   color: '#6B4226',
@@ -136,7 +137,7 @@ export default function Footer({ property }) {
                   transition: 'all 0.2s ease',
                 }}
               >
-                › {item}
+                › {item.label}
               </MuiLink>
             ))}
           </Grid>
