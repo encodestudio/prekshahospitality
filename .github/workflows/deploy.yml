@@ -55,16 +55,8 @@ jobs:
             cd backend
 
             # Sync select settings from GitHub secrets into the server .env (create or update in place).
-            set_env() {
-              if [ -z "$2" ]; then return; fi
-              if grep -q "^$1=" .env 2>/dev/null; then
-                sed -i "s|^$1=.*|$1=$2|" .env
-              else
-                echo "$1=$2" >> .env
-              fi
-            }
-            set_env BACKEND_URL "$BACKEND_URL"
-            set_env ICS_WHATSAPP_TICKET_TEMPLATE "$ICS_WHATSAPP_TICKET_TEMPLATE"
+            grep -q "^BACKEND_URL=" .env 2>/dev/null && sed -i "s#^BACKEND_URL=.*#BACKEND_URL=$BACKEND_URL#" .env || echo "BACKEND_URL=$BACKEND_URL" >> .env
+            grep -q "^ICS_WHATSAPP_TICKET_TEMPLATE=" .env 2>/dev/null && sed -i "s#^ICS_WHATSAPP_TICKET_TEMPLATE=.*#ICS_WHATSAPP_TICKET_TEMPLATE=$ICS_WHATSAPP_TICKET_TEMPLATE#" .env || echo "ICS_WHATSAPP_TICKET_TEMPLATE=$ICS_WHATSAPP_TICKET_TEMPLATE" >> .env
 
             source venv/bin/activate
             pip install -r requirements.txt
