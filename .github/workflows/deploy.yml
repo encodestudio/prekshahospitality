@@ -38,10 +38,14 @@ jobs:
     steps:
       - name: Deploy backend over SSH
         uses: appleboy/ssh-action@v1.0.3
+        env:
+          BACKEND_URL: ${{ secrets.BACKEND_URL }}
+          ICS_WHATSAPP_TICKET_TEMPLATE: ${{ secrets.ICS_WHATSAPP_TICKET_TEMPLATE }}
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
+          envs: BACKEND_URL,ICS_WHATSAPP_TICKET_TEMPLATE
           script_stop: true
           script: |
             cd ~/prekshahospitality
@@ -49,6 +53,19 @@ jobs:
             git reset --hard origin/main
 
             cd backend
+
+            # Sync select settings from GitHub secrets into the server .env (create or update in place).
+            set_env() {
+              if [ -z "$2" ]; then return; fi
+              if grep -q "^$1=" .env 2>/dev/null; then
+                sed -i "s|^$1=.*|$1=$2|" .env
+              else
+                echo "$1=$2" >> .env
+              fi
+            }
+            set_env BACKEND_URL "$BACKEND_URL"
+            set_env ICS_WHATSAPP_TICKET_TEMPLATE "$ICS_WHATSAPP_TICKET_TEMPLATE"
+
             source venv/bin/activate
             pip install -r requirements.txt
             python manage.py migrate --noinput
