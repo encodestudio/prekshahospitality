@@ -115,7 +115,7 @@ def send_booking_confirmation_whatsapp(booking_id):
 
     send_whatsapp_template(
         to=booking.mobile_number,
-        template_name='booking_request',
+        template_name=settings.ICS_WHATSAPP_REQUEST_TEMPLATE,
         placeholders=[
             booking.guest_name,
             booking.venue.name if booking.venue else '',
@@ -137,7 +137,7 @@ def send_booking_status_whatsapp(booking_id):
     venue_name = booking.venue.name if booking.venue else ''
 
     if booking.status == BookingRequest.STATUS_CONFIRMED:
-        template_name = 'booking_confirmed'
+        template_name = settings.ICS_WHATSAPP_CONFIRMED_TEMPLATE
         placeholders = [
             booking.guest_name,
             venue_name,

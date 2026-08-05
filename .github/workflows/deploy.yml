@@ -41,11 +41,13 @@ jobs:
         env:
           BACKEND_URL: ${{ secrets.BACKEND_URL }}
           ICS_WHATSAPP_TICKET_TEMPLATE: ${{ secrets.ICS_WHATSAPP_TICKET_TEMPLATE }}
+          ICS_WHATSAPP_REQUEST_TEMPLATE: ${{ secrets.ICS_WHATSAPP_REQUEST_TEMPLATE }}
+          ICS_WHATSAPP_CONFIRMED_TEMPLATE: ${{ secrets.ICS_WHATSAPP_CONFIRMED_TEMPLATE }}
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
-          envs: BACKEND_URL,ICS_WHATSAPP_TICKET_TEMPLATE
+          envs: BACKEND_URL,ICS_WHATSAPP_TICKET_TEMPLATE,ICS_WHATSAPP_REQUEST_TEMPLATE,ICS_WHATSAPP_CONFIRMED_TEMPLATE
           script_stop: true
           script: |
             cd ~/prekshahospitality
@@ -57,6 +59,8 @@ jobs:
             # Sync select settings from GitHub secrets into the server .env (create or update in place).
             grep -q "^BACKEND_URL=" .env 2>/dev/null && sed -i "s#^BACKEND_URL=.*#BACKEND_URL=$BACKEND_URL#" .env || echo "BACKEND_URL=$BACKEND_URL" >> .env
             grep -q "^ICS_WHATSAPP_TICKET_TEMPLATE=" .env 2>/dev/null && sed -i "s#^ICS_WHATSAPP_TICKET_TEMPLATE=.*#ICS_WHATSAPP_TICKET_TEMPLATE=$ICS_WHATSAPP_TICKET_TEMPLATE#" .env || echo "ICS_WHATSAPP_TICKET_TEMPLATE=$ICS_WHATSAPP_TICKET_TEMPLATE" >> .env
+            grep -q "^ICS_WHATSAPP_REQUEST_TEMPLATE=" .env 2>/dev/null && sed -i "s#^ICS_WHATSAPP_REQUEST_TEMPLATE=.*#ICS_WHATSAPP_REQUEST_TEMPLATE=$ICS_WHATSAPP_REQUEST_TEMPLATE#" .env || echo "ICS_WHATSAPP_REQUEST_TEMPLATE=$ICS_WHATSAPP_REQUEST_TEMPLATE" >> .env
+            grep -q "^ICS_WHATSAPP_CONFIRMED_TEMPLATE=" .env 2>/dev/null && sed -i "s#^ICS_WHATSAPP_CONFIRMED_TEMPLATE=.*#ICS_WHATSAPP_CONFIRMED_TEMPLATE=$ICS_WHATSAPP_CONFIRMED_TEMPLATE#" .env || echo "ICS_WHATSAPP_CONFIRMED_TEMPLATE=$ICS_WHATSAPP_CONFIRMED_TEMPLATE" >> .env
 
             source venv/bin/activate
             pip install -r requirements.txt

@@ -187,12 +187,18 @@ else:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # ICS WhatsApp Business API (WABA) — booking confirmation & status update messages.
-# Templates (booking_request, booking_confirmed, booking_cancelled) are created &
-# approved via the ICS dashboard/API — the template NAME is sent directly as the
-# "templateid" field per ICS support, so no separate id setting is needed here.
+# Templates are created & approved via the ICS dashboard/API — the template NAME is
+# sent directly as the "templateid" field per ICS support, so no separate id setting
+# is needed here. Names are configurable (rather than hardcoded in tasks.py) since the
+# "_alt" policy-carrying templates were submitted as new templates, not in-place edits.
 ICS_WHATSAPP_USER = config('ICS_WHATSAPP_USER', default='')
 ICS_WHATSAPP_PASS = config('ICS_WHATSAPP_PASS', default='')
 ICS_WHATSAPP_FROM = config('ICS_WHATSAPP_FROM', default='')  # registered WABA number, e.g. 9180xxxxxxx (no +)
+
+# Booking-request-received template (5 vars: guest, venue, ref, check-in, check-out).
+ICS_WHATSAPP_REQUEST_TEMPLATE = config('ICS_WHATSAPP_REQUEST_TEMPLATE', default='booking_request_alt')
+# Booking-confirmed template (same 5 vars) — booking_cancelled is unaffected/unchanged.
+ICS_WHATSAPP_CONFIRMED_TEMPLATE = config('ICS_WHATSAPP_CONFIRMED_TEMPLATE', default='booking_confirmed_alt')
 
 # Name of the (separately approved, Document-header) WhatsApp template used to deliver
 # the boarding-pass style booking ticket PDF. Must exist in the ICS/WhatsApp Business
