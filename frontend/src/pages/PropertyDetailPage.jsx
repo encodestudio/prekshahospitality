@@ -8,6 +8,7 @@ import PropertyInfo from '../components/home/PropertyInfo';
 import PropertyGallery from '../components/home/PropertyGallery';
 import AmenitiesSection from '../components/home/AmenitiesSection';
 import PropertyLocation from '../components/home/PropertyLocation';
+import NearbyAttractions from '../components/home/NearbyAttractions';
 import RoomsSection from '../components/home/RoomsSection';
 import BookingPolicy from '../components/home/BookingPolicy';
 import BookingBanner from '../components/home/BookingBanner';
@@ -100,6 +101,7 @@ export default function PropertyDetailPage() {
       <PropertyGallery property={property} />
       <AmenitiesSection property={property} />
       <PropertyLocation property={property} />
+      <NearbyAttractions property={property} />
       <RoomsSection property={property} />
       <BookingPolicy property={property} />
       <BookingBanner property={property} />

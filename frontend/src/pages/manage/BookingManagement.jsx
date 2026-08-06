@@ -11,6 +11,7 @@ import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import LogoutIcon from '@mui/icons-material/Logout';
+import PlaceIcon from '@mui/icons-material/Place';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import SearchIcon from '@mui/icons-material/Search';
 import FilterListIcon from '@mui/icons-material/FilterList';
@@ -721,6 +722,15 @@ export default function BookingManagement() {
           <Typography variant="body2" sx={{ color: '#FFD9C0', display: { xs: 'none', sm: 'block' } }}>
             {user.full_name || user.username}
           </Typography>
+          <Button
+            variant="outlined"
+            size="small"
+            startIcon={<PlaceIcon />}
+            onClick={() => navigate('/manage/attractions')}
+            sx={{ color: '#FFD700', borderColor: 'rgba(255,215,0,0.4)', '&:hover': { borderColor: '#FFD700' } }}
+          >
+            Nearby Attractions
+          </Button>
           <Button
             variant="outlined"
             size="small"

@@ -15,6 +15,7 @@ import ContactPage from './pages/ContactPage';
 import AboutPage from './pages/AboutPage';
 import LoginPage from './pages/manage/LoginPage';
 import BookingManagement from './pages/manage/BookingManagement';
+import CitiesManagement from './pages/manage/CitiesManagement';
 
 export default function App() {
   return (
@@ -42,6 +43,7 @@ export default function App() {
 
               {/* Booking Management System */}
               <Route path="/manage/login" element={<LoginPage />} />
+              <Route path="/manage/attractions" element={<CitiesManagement />} />
               <Route path="/manage" element={<BookingManagement />} />
               <Route path="/manage/*" element={<BookingManagement />} />
 

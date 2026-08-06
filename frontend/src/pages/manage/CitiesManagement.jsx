@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
-  Box, Grid, Paper, Typography, Button, TextField, IconButton,
+  Box, Container, Grid, Paper, Typography, Button, TextField, IconButton,
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
   Dialog, DialogTitle, DialogContent, DialogActions, Divider,
   Chip, Alert, CircularProgress, Tooltip, Stack, Tabs, Tab,
@@ -12,7 +13,10 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 import PlaceIcon from '@mui/icons-material/Place';
 import CloseIcon from '@mui/icons-material/Close';
+import LogoutIcon from '@mui/icons-material/Logout';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { citiesApi } from '../../services/api';
+import { useAuth } from '../../context/AuthContext';
 
 // ─── City Form Dialog ────────────────────────────────────────────────────────
 
@@ -239,8 +243,8 @@ function CityFormDialog({ open, onClose, city, onSaved }) {
                 </Grid>
                 <Grid item xs={8} sm={4}>
                   <TextField
-                    label="Distance from Hotel" value={placeForm.distance} fullWidth size="small"
-                    placeholder="e.g., 2 km"
+                    label="Distance / Drive Time" value={placeForm.distance} fullWidth size="small"
+                    placeholder="e.g., 3 to 5 minute drive"
                     onChange={(e) => setPlaceForm((f) => ({ ...f, distance: e.target.value }))}
                   />
                 </Grid>
@@ -460,6 +464,9 @@ function DeleteCityDialog({ open, onClose, city, onConfirm, deleting, error }) {
 // ─── Main CitiesManagement ───────────────────────────────────────────────────
 
 export default function CitiesManagement() {
+  const { user, authLoading, logout } = useAuth();
+  const navigate = useNavigate();
+
   const [cities, setCities] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -471,7 +478,13 @@ export default function CitiesManagement() {
   const [deleting, setDeleting] = useState(false);
   const [deleteError, setDeleteError] = useState('');
 
+  // Auth guard
+  useEffect(() => {
+    if (!authLoading && !user) navigate('/manage/login', { replace: true });
+  }, [user, authLoading, navigate]);
+
   const fetchCities = useCallback(async () => {
+    if (!user) return;
     setLoading(true);
     setError('');
     try {
@@ -482,9 +495,18 @@ export default function CitiesManagement() {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [user]);
 
   useEffect(() => { fetchCities(); }, [fetchCities]);
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+    } catch (_) {
+      // ignore errors — still clear state and redirect
+    }
+    navigate('/manage/login', { replace: true });
+  };
 
   const handleEdit = async (city) => {
     const res = await citiesApi.get(city.id);
@@ -511,8 +533,65 @@ export default function CitiesManagement() {
     }
   };
 
+  if (authLoading) {
+    return (
+      <Box sx={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#1A0F08' }}>
+        <CircularProgress sx={{ color: '#FF6B35' }} />
+      </Box>
+    );
+  }
+
+  if (!user) return null;
+
   return (
-    <Box>
+    <Box sx={{ minHeight: '100vh', background: 'linear-gradient(180deg, #1A0F08 0%, #2C1810 100%)' }}>
+      {/* Top Bar */}
+      <Box
+        sx={{
+          background: 'rgba(26,15,8,0.95)',
+          borderBottom: '1px solid rgba(255,215,0,0.15)',
+          py: 1.5,
+          px: { xs: 2, md: 4 },
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          position: 'sticky',
+          top: 0,
+          zIndex: 100,
+        }}
+      >
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+          <Tooltip title="Back to Bookings">
+            <IconButton onClick={() => navigate('/manage')} sx={{ color: '#FFD9C0' }}>
+              <ArrowBackIcon />
+            </IconButton>
+          </Tooltip>
+          <Box>
+            <Typography variant="h6" sx={{ fontFamily: '"Cinzel", serif', color: '#FFD700', lineHeight: 1.2 }}>
+              Destinations &amp; Nearby Attractions
+            </Typography>
+            <Typography variant="caption" sx={{ color: '#FFD9C0' }}>
+              Preksha Hospitality
+            </Typography>
+          </Box>
+        </Box>
+        <Stack direction="row" spacing={1.5} alignItems="center">
+          <Typography variant="body2" sx={{ color: '#FFD9C0', display: { xs: 'none', sm: 'block' } }}>
+            {user.full_name || user.username}
+          </Typography>
+          <Button
+            variant="outlined"
+            size="small"
+            startIcon={<LogoutIcon />}
+            onClick={handleLogout}
+            sx={{ color: '#FF6B35', borderColor: 'rgba(255,107,53,0.4)', '&:hover': { borderColor: '#FF6B35' } }}
+          >
+            Logout
+          </Button>
+        </Stack>
+      </Box>
+
+      <Container maxWidth="xl" sx={{ py: 4 }}>
       {/* Action bar */}
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
         <Typography variant="h6" sx={{ color: '#FFD700', fontFamily: '"Cinzel", serif' }}>
@@ -622,6 +701,7 @@ export default function CitiesManagement() {
         deleting={deleting}
         error={deleteError}
       />
+      </Container>
     </Box>
   );
 }
